@@ -1,8 +1,14 @@
-body{
-    height: 100%;
+html {
+  height : 100%;
+}
 
-    /* Center and scale the image nicely */
+.bg {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+}
+
+#icons{
+  float: right;
+  padding: 10px;
 }
