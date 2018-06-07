@@ -28,7 +28,8 @@ function parseData(response, to_set) {
           post_url: item_url.images[0].source.url,
           post_permalink: item.data.permalink,
           post_title: item.data.title,
-          post_author: item.data.author
+          post_author: item.data.author,
+          post_actual_url: item.data.url
         });
     }
   });
@@ -48,7 +49,9 @@ function setBackground(post_info_list) {
 
   document.body.style.backgroundImage = "url("+post_info.post_url+")";
   document.getElementById('info_title').textContent = post_info.post_title;
-  document.getElementById('info_author').textContent = post_info.post_author;
+  document.getElementById('info_title').href = post_info.post_actual_url;
+  document.getElementById('info_author').textContent = "Posted by: "+post_info.post_author;
+  document.getElementById('info_author').href = "https://reddit.com/user/"+post_info.post_author;
   document.getElementById('info_permalink').href = "https://reddit.com"+post_info.post_permalink;
   if (post_info_list.length === 0) {
     httpGetAsync(getUrl(), parseData, false);

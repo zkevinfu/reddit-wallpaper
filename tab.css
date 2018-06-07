@@ -15,6 +15,12 @@ html {
   text-decoration: none;
   vertical-align: middle;
 }
+.i-author {
+  font-style: italic;
+}
+.i-title {
+  font-weight: bold;
+}
 .m-dropdown {
   margin-left: 47px;
 }
