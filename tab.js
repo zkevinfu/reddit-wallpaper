@@ -38,6 +38,6 @@ function dropdownAppendLink() {
   document.getElementById("menu_dropdown").appendChild(node);
 }
 
-dropdownAppendLink();
+//dropdownAppendLink();
 //<img height="16" width="16" src='http://www.google.com/s2/favicons?domain=www.edocuments.co.uk' />
 //https://icons.duckduckgo.com/ip2/reddit.com.ico

@@ -15,6 +15,21 @@ html {
   text-decoration: none;
   vertical-align: middle;
 }
+.m-dropdown {
+  margin-left: 47px;
+}
+.m-favicon {
+  height: 16px;
+  margin-right: 5px;
+  vertical-align: middle;
+  width: 16px;
+}
+
+.m-links{
+  max-height: 200px;
+  overflow: auto;
+  padding: 0 0;
+}
 
 .m-icon {
   border-radius: 50%;
@@ -22,7 +37,6 @@ html {
   height: 32px;
   margin-right: 10px;
   opacity: .5;
-  vertical-align: middle;
   width: 32px;
 }
 
@@ -32,9 +46,8 @@ html {
 
 .dropdown {
   display: inline-block;
-  padding: 10px;
   position: relative;
-
+  vertical-align: middle;
 }
 
 .dropdown-content {
@@ -52,7 +65,7 @@ html {
 .dropdown-content a, div {
     color: black;
     display: block;
-    padding: 10px 8px;
+    padding: 5px 8px;
     text-decoration: none;
 }
 
@@ -62,4 +75,6 @@ html {
   cursor: pointer;
 }
 
-.show {display:block;}
+.show {
+  display:block;
+}
