@@ -8,7 +8,58 @@ html {
     background-size: cover;
 }
 
-#icons{
-  float: right;
-  padding: 10px;
+.ib-link {
+  color: black;
+  font-size: 16px;
+  margin: auto;
+  text-decoration: none;
+  vertical-align: middle;
 }
+
+.m-icon {
+  border-radius: 50%;
+  cursor: pointer;
+  height: 32px;
+  margin-right: 10px;
+  opacity: .5;
+  vertical-align: middle;
+  width: 32px;
+}
+
+.m-icon:hover {
+  opacity: 1;
+}
+
+.dropdown {
+  display: inline-block;
+  padding: 10px;
+  position: relative;
+
+}
+
+.dropdown-content {
+  background-color: #f1f1f1;
+  background-color: rgba(241,241,241,0.7);
+  border-radius: 5%;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  display: none;
+  min-width: 160px;
+  overflow: auto;
+  position: absolute;
+  z-index: 1;
+}
+
+.dropdown-content a, div {
+    color: black;
+    display: block;
+    padding: 10px 8px;
+    text-decoration: none;
+}
+
+.dropdown a:hover {
+  background-color: #ddd;
+  border-radius: 5%;
+  cursor: pointer;
+}
+
+.show {display:block;}

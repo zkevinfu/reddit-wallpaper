@@ -5,10 +5,26 @@
   <title>New Tab</title>
 </head>
 <body class="bg">
-  <div id="icons">
-    <a href="https://drive.google.com/drive/my-drive">drive</a>
-    <a href="https://gmail.com">gmail</a>
+  <div class="dropdown">
+    <img id="info_icon" class="m-icon" src="info_icon.jpg" />
+    <div id="info_dropdown" class="dropdown-content">
+      <div id="info_title">Title</div>
+      <div id="info_author">Author</div>
+      <hr />
+      <a id="info_permalink">Go to Post</a>
+    </div>
+    <img id="menu_icon" class="m-icon" src="menu_icon.png"/>
+    <div id="menu_dropdown" class="dropdown-content">
+      <div style="padding:0 0">
+        <a href="#home"><img height="16" width="16" src="http://www.google.com/s2/favicons?domain=reddit.com"/>Home</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <hr />
+      <a>Add Quicklink</a>
+    </div>
   </div>
 </body>
+<script src="background_loader.js"></script>
 <script src="tab.js"></script>
 </html>

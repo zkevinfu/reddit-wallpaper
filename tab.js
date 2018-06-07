@@ -1,63 +1,43 @@
-function httpGetAsync(theUrl, callback, to_set) {
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function(){
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
-            callback(xmlHttp.responseText, to_set);
-        }
-    };
-    xmlHttp.open("GET", theUrl, true); // true for asynchronous
-    //xmlHttp.setRequestHeader('User-agent', 'chrome:imaginarylandscapes_wallpaper:v0.1 (by /u/begelsyah)');
-    xmlHttp.send(null);
-}
-
-function parseData(response, to_set) {
-  var resp_json = JSON.parse(response);
-  var il_posts = resp_json.data.children;
-  var url_list = [];
-  il_posts.forEach(function(item, index) {
-    var item_url = item.data.preview;
-    if(item_url!= undefined) {
-      url_list.push(item_url.images[0].source.url);
+function hideDropdowns() {
+  var dropdowns = document.getElementsByClassName("dropdown-content");
+  for (var i = 0; i < dropdowns.length; i++) {
+    var openDropdown = dropdowns[i];
+    if (openDropdown.classList.contains('show')) {
+      openDropdown.classList.remove('show');
     }
-  });
-  if (to_set) {
-    setBackground(url_list);
-  } else {
-    saveUrlList(url_list);
   }
 }
 
-function setBackground(url_list) {
-  //resp_json.data.children[0].data.preview.images[0].source.url
-  //resp_json.data.children[0].data.url
-  var img_url;
-  do {
-    img_url = url_list.shift();
-  } while (img_url == undefined);
-  document.body.style.backgroundImage = "url("+img_url+")";
-  if (url_list.length === 0) {
-    httpGetAsync('https://www.reddit.com/r/ImaginaryLandscapes.json', parseData, false);
-  } else {
-    saveUrlList(url_list);
+document.getElementById('menu_icon').addEventListener("click", function(){
+  hideDropdowns();
+  document.getElementById("menu_dropdown").classList.toggle("show");
+});
+
+document.getElementById('info_icon').addEventListener("click", function(){
+  hideDropdowns();
+  document.getElementById("info_dropdown").classList.toggle("show");
+});
+
+window.onclick = function(event) {
+  if (!event.target.matches('.m-icon')) {
+    hideDropdowns();
   }
+};
+
+function dropdownAppendLink() {
+  var link = "https://google.com";
+  var link_name = "google";
+
+  var node = document.createElement("a");
+  var imgnode = document.createElement("img");
+  imgnode.setAttribute("src", "http://www.google.com/s2/favicons?domain=reddit.com");
+  var textnode = document.createTextNode(link_name);
+  node.setAttribute('href', link);
+  node.appendChild(imgnode);
+  node.appendChild(textnode);
+  document.getElementById("menu_dropdown").appendChild(node);
 }
 
-function saveUrlList(url_list) {
-  chrome.storage.local.set({url_list: url_list});
-}
-
-function loadBackground() {
-  /*
-  syntax for after first page searches
-  https://www.reddit.com/r/imaginarylandscapes/.json?count=50&after=t3_10omtd/
-  */
-  chrome.storage.local.get(['url_list'], function(result) {
-    if (result.url_list == undefined) {
-      httpGetAsync('https://www.reddit.com/r/ImaginaryLandscapes.json', parseData, true);
-    } else {
-      setBackground(result.url_list);
-    }
-  });
-}
-
-loadBackground();
+dropdownAppendLink();
+//<img height="16" width="16" src='http://www.google.com/s2/favicons?domain=www.edocuments.co.uk' />
+//https://icons.duckduckgo.com/ip2/reddit.com.ico
