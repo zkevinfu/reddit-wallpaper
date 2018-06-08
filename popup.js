@@ -12,7 +12,7 @@ function setPermalink(){
 
 
 document.getElementById('clear_queue').addEventListener("click", function(){
-  chrome.storage.local.set({url_list: ''});
+  chrome.storage.local.set({post_info_list: ''});
 });
 
-setPermalink();
+//setPermalink();

@@ -6,15 +6,9 @@
 </head>
 <body class="bg">
   <div class="dropdown">
-    <img id="info_icon" class="m-icon" src="info_icon.jpg" />
-    <div id="info_dropdown" class="dropdown-content">
-      <a id="info_title" class="i-title">Title</a>
-      <a id="info_author" class="i-author">Author</a>
-      <hr />
-      <a id="info_permalink">Go to Post</a>
-    </div>
     <img id="menu_icon" class="m-icon" src="menu_icon.png"/>
-    <div id="menu_dropdown" class="dropdown-content m-dropdown">
+    <span id="menu_arrow" class="dropdown-box dropdown-arrow m-arrow"></span>
+    <div id="menu_dropdown" class="dropdown-box dropdown-content m-dropdown">
       <div id="menu_dropdown_links" class="m-links">
         <a class="m-text" href="https://gmail.com">
           <img class="m-favicon" src="https://mail.google.com/favicon.ico"/>
@@ -30,7 +24,26 @@
         </a>
       </div>
       <hr />
-      <a>Add Quicklink</a>
+      <a id="add_quicklink">Add Quicklink</a>
+    </div>
+    <img id="info_icon" class="m-icon" src="info_icon.png" />
+    <span id="info_arrow" class="dropdown-box dropdown-arrow i-arrow"></span>
+    <div id="info_dropdown" class="dropdown-box dropdown-content i-dropdown">
+      <a id="info_title" class="i-title">Title</a>
+      <a id="info_author" class="i-author">Author</a>
+      <hr />
+      <a id="info_permalink">Go to Post</a>
+    </div>
+    <img id="setting_icon" class="m-icon" src="cog.png" />
+    <span id="setting_arrow" class="dropdown-box dropdown-arrow s-arrow"></span>
+    <div id="setting_dropdown" class="dropdown-box dropdown-content s-dropdown">
+      hello
+    </div>
+  </div>
+  <div id="modal_quicklink" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>Some text in the Modal..</p>
     </div>
   </div>
 </body>
