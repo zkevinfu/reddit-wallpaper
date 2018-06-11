@@ -5,26 +5,56 @@
   <title>New Tab</title>
 </head>
 <body class="bg">
-  <div class="dropdown">
+  <div id="dropdown" class="dropdown">
     <img id="menu_icon" class="m-icon" src="menu_icon.png"/>
     <span id="menu_arrow" class="dropdown-box dropdown-arrow m-arrow"></span>
     <div id="menu_dropdown" class="dropdown-box dropdown-content m-dropdown">
       <div id="menu_dropdown_links" class="m-links">
         <a class="m-text" href="https://gmail.com">
-          <img class="m-favicon" src="https://mail.google.com/favicon.ico"/>
-          Gmail
+          <img class="m-favicon" src="https://mail.google.com/favicon.ico"/>Gmail
         </a>
         <a class="m-text" href="https://drive.google.com">
-          <img class="m-favicon" src="https://drive.google.com/favicon.ico"/>
-          Drive
+          <img class="m-favicon" src="https://drive.google.com/favicon.ico"/>Drive
         </a>
         <a class="m-text" href="https://reddit.com">
-          <img class="m-favicon" src="https://icons.duckduckgo.com/ip2/reddit.com.ico"/>
-          Reddit
+          <img class="m-favicon" src="https://icons.duckduckgo.com/ip2/reddit.com.ico"/>Reddit
         </a>
       </div>
       <hr />
-      <a id="add_quicklink">Add Quicklink</a>
+      <a id="manage_quicklink">Manage Quicklinks</a>
+      <div id="quicklink_options" class="quicklink-options dropdown-ext">
+        <a id="add_quicklink">Add Quicklink</a>
+        <a id="edit_quicklink">Edit Quicklink</a>
+        <a id="remove_quicklink">Remove Quicklink</a>
+      </div>
+    </div>
+    <div id="quicklink_dropdown" class="dropdown-box dropdown-content ql-dropdown">
+      <div class="quicklink-input">
+        <div class="quicklink-title">Add Quicklink</div>
+        Name:<input id="quicklink_name" type="text" size="17"/> <br /><br />
+        URL: <input id="quicklink_url" type="text" size="17"/>
+      </div>
+      <hr />
+      <a id="add_quicklink_change_icon_button" class="change-icon-button">Change Icon</a>
+      <a id="add_quicklink_submit" class="submit-button">Submit</a>
+    </div>
+    <div id="add_quicklink_change_icon_dropdown" class="dropdown-box dropdown-content aqlci-dropdown">
+      <label>
+        <input type="radio" name="changefavi" value="favico_fav" checked="checked"/>
+        <img id="favico_fav" class="m-favicon fav-border">
+      </label>
+      <label>
+        <input type="radio" name="changefavi" value="google_fav"/>
+        <img id="google_fav" class="m-favicon fav-border">
+      </label>
+      <label>
+        <input id="fb3" type="radio" name="changefavi" value="duck_fav" />
+        <img id="duck_fav" class="m-favicon fav-border">
+      </label>
+      <label>
+        <input id="fb4" type="radio" name="changefavi" value="nofavi_fav" />
+        <img id="nofavi_fav" class="m-favicon fav-border">
+      </label>
     </div>
     <img id="info_icon" class="m-icon" src="info_icon.png" />
     <span id="info_arrow" class="dropdown-box dropdown-arrow i-arrow"></span>

@@ -39,17 +39,19 @@ html, body{
 }
 .m-favicon {
   height: 16px;
-  margin-right: 5px;
+  margin-right: 10px;
   vertical-align: middle;
   width: 16px;
 }
 
-.m-links{
+.m-links {
   max-height: 200px;
   overflow: auto;
   padding: 0 0;
 }
-
+.m-text {
+  white-space: nowrap;
+}
 .m-icon {
   border-radius: 50%;
   cursor: pointer;
@@ -76,6 +78,9 @@ html, body{
   position: absolute;
   z-index: 1;
 }
+.dropdown-ext {
+  display: none;
+}
 .dropdown-arrow {
   border-bottom: 5px solid #f1f1f1;
   border-bottom: 5px solid rgba(241,241,241,0.7);
@@ -88,21 +93,40 @@ html, body{
   background-color: #f1f1f1;
   background-color: rgba(241,241,241,0.7);
   border-radius: 5%;
-  min-width: 160px;
-  overflow: auto;
+  overflow: scroll;
+  width: 160px;
 }
 
-.dropdown-content a, div {
+.dropdown-content a, div{
     color: black;
     display: block;
     padding: 5px 8px;
     text-decoration: none;
 }
-
 .dropdown a:hover {
   background-color: #ddd;
   border-radius: 5%;
   cursor: pointer;
+}
+.quicklink-title {
+  font-weight: bold;
+  padding: 10px 0;
+}
+.quicklink-input {
+  display: inline-block;
+  overflow: scroll;
+  padding: 0 0;
+}
+.quicklink-options {
+  padding:0 5px;
+}
+.quicklink-input input{
+  float: right;
+  margin-left: 5px
+}
+.ql-dropdown {
+  margin-left: 265px;
+  margin-top: 40px;
 }
 .s-arrow {
   margin-left: 11px;
@@ -112,6 +136,36 @@ html, body{
   margin-left: 0;
   margin-top: 40px;
 }
+.aqlci-dropdown {
+  margin-left: 265px;
+  margin-top: 175px
+}
 .show {
   display:block;
+}
+.invalid {
+  border: 2px solid rgb(255, 0, 0);
+  border: 2px solid rgba(255, 0, 0, .5);
+}
+.submit-button {
+  float:right;
+  margin-right: 10px;
+}
+.change-icon-button {
+  float: left;
+  margin-left: 2px;
+}
+.fav-border {
+  border: 1px solid lightgrey;
+}
+label > input{ /* HIDE RADIO */
+  visibility: hidden; /* Makes input not-clickable */
+  position: absolute; /* Remove input from document flow */
+}
+label > input + img{ /* IMAGE STYLES */
+  cursor:pointer;
+  border:2px solid transparent;
+}
+label > input:checked + img{ /* (RADIO CHECKED) IMAGE STYLES */
+  border:2px solid grey;
 }
