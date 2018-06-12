@@ -9,28 +9,36 @@
     <img id="menu_icon" class="m-icon" src="menu_icon.png"/>
     <span id="menu_arrow" class="dropdown-box dropdown-arrow m-arrow"></span>
     <div id="menu_dropdown" class="dropdown-box dropdown-content m-dropdown">
+      <div id="remove_quicklink_title" class="no-padding variable-m-title">
+        <div class="title">Remove Quicklinks</div>
+        <hr />
+      </div>
+      <div id="edit_quicklink_title" class="no-padding variable-m-title">
+        <div class="title">Edit Quicklinks</div>
+        <hr />
+      </div>
       <div id="menu_dropdown_links" class="m-links">
-        <a class="m-text" href="https://gmail.com">
+        <a id="http://gmail.com" class="m-text" href="http://gmail.com">
           <img class="m-favicon" src="https://mail.google.com/favicon.ico"/>Gmail
         </a>
-        <a class="m-text" href="https://drive.google.com">
+        <a id="http://drive.google.com" class="m-text" href="http://drive.google.com">
           <img class="m-favicon" src="https://drive.google.com/favicon.ico"/>Drive
         </a>
-        <a class="m-text" href="https://reddit.com">
+        <a id="http://reddit.com" class="m-text" href="http://reddit.com">
           <img class="m-favicon" src="https://icons.duckduckgo.com/ip2/reddit.com.ico"/>Reddit
         </a>
       </div>
       <hr />
       <a id="manage_quicklink">Manage Quicklinks</a>
-      <div id="quicklink_options" class="quicklink-options dropdown-ext">
+      <div id="quicklink_options" class="quicklink-options">
         <a id="add_quicklink">Add Quicklink</a>
         <a id="edit_quicklink">Edit Quicklink</a>
         <a id="remove_quicklink">Remove Quicklink</a>
       </div>
     </div>
     <div id="quicklink_dropdown" class="dropdown-box dropdown-content ql-dropdown">
-      <div class="quicklink-input">
-        <div class="quicklink-title">Add Quicklink</div>
+      <div class="quicklink-input no-padding">
+        <div class="quicklink-title title">Add Quicklink</div>
         Name:<input id="quicklink_name" type="text" size="17"/> <br /><br />
         URL: <input id="quicklink_url" type="text" size="17"/>
       </div>
@@ -59,7 +67,7 @@
     <img id="info_icon" class="m-icon" src="info_icon.png" />
     <span id="info_arrow" class="dropdown-box dropdown-arrow i-arrow"></span>
     <div id="info_dropdown" class="dropdown-box dropdown-content i-dropdown">
-      <a id="info_title" class="i-title">Title</a>
+      <a id="info_title" class="title">Title</a>
       <a id="info_author" class="i-author">Author</a>
       <hr />
       <a id="info_permalink">Go to Post</a>

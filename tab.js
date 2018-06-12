@@ -1,3 +1,4 @@
+/*jshint esversion: 6 */
 var url_with_favi_issues = {
   gmailcom:"mail.google.com"
 };
@@ -12,24 +13,48 @@ chrome.storage.sync.get(['quicklinks', 'settings'], function(results){
 });
 
 function hideDropdowns() {
-  hideClass("dropdown-box");
-  hideClass("dropdown-ext");
+  removeClass("dropdown-box");
+  removeClass('quicklink-options');
 }
-function hideClass(class_name) {
-  var dropdowns = document.getElementsByClassName(class_name);
-  for (var i = 0; i < dropdowns.length; i++) {
-    var openDropdown = dropdowns[i];
-    if (openDropdown.classList.contains('show')) {
-      openDropdown.classList.remove('show');
+function removeListener(to_remove, class_name = 'm-text'){
+  var elements = document.getElementsByClassName(class_name);
+  for (i = 0; i < elements.length; i++) {
+    elements[i].removeEventListener("click", to_remove[elements[i].id]);
+  }
+}
+function resetStatus() {
+  document.getElementById('quicklink_dropdown').classList.remove('show');
+  document.getElementById('add_quicklink_change_icon_dropdown').classList.remove('show');
+  document.getElementById('quicklink_name').classList.remove("invalid");
+  document.getElementById('quicklink_url').classList.remove("invalid");
+  clearQuicklinkInput();
+  removeClass('variable-m-title');
+  removeClass('m-text', 'to-remove');
+  removeClass('selected', 'selected');
+  removeListener(removeOnClickDict);
+  removeOnClickDict = {};
+}
+function removeClass(class_name, to_remove = 'show') {
+  var elements = document.getElementsByClassName(class_name);
+  var i;
+  for (i = 0; i < elements.length; i++) {
+    if (elements[i].classList.contains(to_remove)) {
+      elements[i].classList.remove(to_remove);
     }
   }
 }
 document.onclick = function(event) {
-  if (!document.getElementById('dropdown').contains(event.target)) {
-    hideDropdowns();
-  }
+  if(!document.getElementById('quicklink_options').contains(event.target) &&
+  !document.getElementById('quicklink_dropdown').contains(event.target) &&
+  !document.getElementById('add_quicklink_change_icon_dropdown').contains(event.target) &&
+  !event.target.classList.contains("m-text")
+){
+  resetStatus();
+}
+if (!document.getElementById('dropdown').contains(event.target) && !event.target.classList.contains("m-text")) {
+  hideDropdowns();
+}
 };
-
 document.getElementById('menu_icon').addEventListener("click", function(){
   hideDropdowns();
   document.getElementById("menu_arrow").classList.toggle("show");
@@ -49,19 +74,37 @@ document.getElementById('manage_quicklink').addEventListener("click", function()
   document.getElementById("quicklink_options").classList.toggle("show");
 });
 document.getElementById('add_quicklink').addEventListener("click", function(){
-  document.getElementById("quicklink_dropdown").classList.toggle("show");
+  resetStatus();
+  document.getElementById('add_quicklink').classList.add("selected");
+  document.getElementById("quicklink_dropdown").classList.add("show");
   document.getElementById("quicklink_name").focus();
 });
+var removeOnClickDict = {};
+var removeOnClick;
+document.getElementById('remove_quicklink').addEventListener("click", function(){
+  resetStatus();
+  document.getElementById('remove_quicklink_title').classList.add("show");
+  document.getElementById('remove_quicklink').classList.add("selected");
+  var things = document.getElementsByClassName('m-text');
+  Array.prototype.forEach.call(things, function(thing) {
+    thing.classList.add('to-remove');
+    thing.addEventListener("click", removeOnClick = function(e){
+      e.preventDefault();
+      document.getElementById('menu_dropdown_links').removeChild(thing);
+      removeQuicklink(thing.id);
+    });
+    removeOnClickDict[thing.id] = removeOnClick;
+  });
+});
 document.getElementById('add_quicklink_change_icon_button').addEventListener("click", function(){
-  var urlbar = document.getElementById('quicklink_url');
-  if (urlbar.value =='') {
-    urlbar.classList.add("invalid");
-    urlbar.focus();
+  if (document.getElementById('quicklink_url').value =='') {
+    document.getElementById('quicklink_url').classList.add("invalid");
+    document.getElementById('quicklink_url').focus();
     return;
   } else {
-    urlbar.classList.remove("invalid");
+    document.getElementById('quicklink_url').classList.remove("invalid");
   }
-  fillFavi(urlbar.value);
+  fillFavi(document.getElementById('quicklink_url').value);
   document.getElementById("add_quicklink_change_icon_dropdown").classList.toggle("show");
 });
 document.getElementById('add_quicklink_submit').addEventListener("click", function(){
@@ -83,15 +126,24 @@ document.getElementById('add_quicklink_submit').addEventListener("click", functi
   }
   var reg = /^.+?(?=\/)/;
   var domain = processURL(url);
+  url = "http://"+url;
+  if (document.getElementById(url)!=undefined){
+    document.getElementById('quicklink_url').value = "In Use!";
+    document.getElementById('quicklink_url').classList.add("invalid");
+    document.getElementById("quicklink_url").focus();
+    return;
+  } else {
+    document.getElementById('quicklink_url').classList.remove("invalid");
+  }
   var favicon = "/nofavi.png";
   var favirad= document.getElementsByName('changefavi');
-  for (var i = 0, length = favirad.length; i < length; i++) {
+  var i;
+  for (i = 0, length = favirad.length; i < length; i++) {
     if (favirad[i].checked) {
       favicon = document.getElementById(favirad[i].value).src;
       break;
     }
   }
-  url = "http://"+url;
   var quicklink_nameandurl = {
     name: name,
     url: url,
@@ -100,10 +152,13 @@ document.getElementById('add_quicklink_submit').addEventListener("click", functi
   };
   cur_url_list.push(quicklink_nameandurl);
   chrome.storage.sync.set({quicklinks:cur_url_list});
-  document.getElementById('quicklink_name').value = '';
-  document.getElementById('quicklink_url').value = '';
+  clearQuicklinkInput();
   dropdownAppendLink(name, url, favicon);
 });
+function clearQuicklinkInput(){
+  document.getElementById('quicklink_name').value = '';
+  document.getElementById('quicklink_url').value = '';
+}
 function processURL(url) {
   var reg = /^.+?(?=\/)/;
   var domain = (url.replace('https://','').replace('http://', '')+'/').match(reg);
@@ -130,14 +185,25 @@ function fillFavi(url, current) {
 function dropdownAppendLink(link_name, link, link_favicon) {
   var node = document.createElement("a");
   var imgnode = document.createElement("img");
+  var textnode = document.createTextNode(link_name);
   imgnode.setAttribute("class", "m-favicon");
   imgnode.setAttribute("src", link_favicon);
-  var textnode = document.createTextNode(link_name);
+  node.setAttribute('id', link);
   node.setAttribute('href', link);
   node.setAttribute('class', 'm-text');
   node.appendChild(imgnode);
   node.appendChild(textnode);
   document.getElementById("menu_dropdown_links").appendChild(node);
+}
+function removeQuicklink(link) {
+  var i;
+  for (i = 0; i < cur_url_list.length; i++) {
+    if (cur_url_list[i].url == link) {
+      cur_url_list.splice(i, 1);
+      chrome.storage.sync.set({quicklinks:cur_url_list});
+      break;
+    }
+  }
 }
 //dropdownAppendLink();
 //<img height="16" width="16" src='http://www.google.com/s2/favicons?domain=www.edocuments.co.uk' />

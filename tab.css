@@ -1,7 +1,6 @@
 html, body{
   height : 100%;
 }
-
 .bg {
     background-position: center;
     background-repeat: no-repeat;
@@ -26,7 +25,7 @@ html, body{
   margin-left: 42px;
   margin-top: 40px;
 }
-.i-title {
+.title {
   font-weight: bold;
 }
 .m-arrow {
@@ -65,7 +64,9 @@ html, body{
 .m-icon:hover {
   opacity: 1;
 }
-
+.m-dropdown hr {
+  margin: 0 0;
+}
 .dropdown {
   display: inline-block;
   position: relative;
@@ -77,9 +78,6 @@ html, body{
   display: none;
   position: absolute;
   z-index: 1;
-}
-.dropdown-ext {
-  display: none;
 }
 .dropdown-arrow {
   border-bottom: 5px solid #f1f1f1;
@@ -96,7 +94,9 @@ html, body{
   overflow: scroll;
   width: 160px;
 }
-
+.variable-m-title {
+  display: none;
+}
 .dropdown-content a, div{
     color: black;
     display: block;
@@ -109,15 +109,14 @@ html, body{
   cursor: pointer;
 }
 .quicklink-title {
-  font-weight: bold;
   padding: 10px 0;
 }
-.quicklink-input {
-  display: inline-block;
+.no-padding {
   overflow: scroll;
   padding: 0 0;
 }
 .quicklink-options {
+  display: none;
   padding:0 5px;
 }
 .quicklink-input input{
@@ -127,6 +126,10 @@ html, body{
 .ql-dropdown {
   margin-left: 265px;
   margin-top: 40px;
+}
+.dropdown .to-remove:hover {
+  background-color: rgb(255, 0, 0);
+  background-color: rgba(255, 0, 0, .5);
 }
 .s-arrow {
   margin-left: 11px;
@@ -138,14 +141,19 @@ html, body{
 }
 .aqlci-dropdown {
   margin-left: 265px;
-  margin-top: 175px
+  margin-top: 180px;
+  text-align: center;
 }
 .show {
   display:block;
 }
 .invalid {
-  border: 2px solid rgb(255, 0, 0);
-  border: 2px solid rgba(255, 0, 0, .5);
+  outline: 2px solid rgb(255, 0, 0);
+  outline: 2px solid rgba(255, 0, 0, .5);
+}
+.selected {
+  background-color: #ddd;
+  border-radius: 5%;
 }
 .submit-button {
   float:right;
@@ -156,16 +164,20 @@ html, body{
   margin-left: 2px;
 }
 .fav-border {
-  border: 1px solid lightgrey;
+  outline: 1px solid #f1f1f1;
+  outline: 1px solid rgba(241,241,241,0.7);
 }
-label > input{ /* HIDE RADIO */
-  visibility: hidden; /* Makes input not-clickable */
-  position: absolute; /* Remove input from document flow */
+/* HIDE RADIO */
+label > input{
+  position: absolute;
+  visibility: hidden;
 }
-label > input + img{ /* IMAGE STYLES */
-  cursor:pointer;
-  border:2px solid transparent;
+/* IMAGE STYLES */
+label > input + img{
+  border: 2px solid transparent;
+  cursor: pointer;
 }
-label > input:checked + img{ /* (RADIO CHECKED) IMAGE STYLES */
-  border:2px solid grey;
+ /* (RADIO CHECKED) IMAGE STYLES */
+label > input:checked + img{
+  outline: 2px solid grey;
 }
