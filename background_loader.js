@@ -1,29 +1,77 @@
-function getUrl(){
+/*jshint esversion: 6 */
+
+/**
+* JavaScript file for all background API processing for loading wall papers.
+* Calls the API if there is nothing in the queue, or if queue is emptied.
+* Otherwise pulls images from chrome local storage and uses that. Also adds
+* information to the info menu.
+*
+* @author Kevin Fu
+* @version 0.1
+*/
+
+/**
+ * Returns the URL to make a GET request from, based off of stored settings.
+ *
+ * @return {string} full url to be request with params. i.e
+ *                  'https://www.reddit.com/r/ImaginaryLandscapes/.json?limit='
+ */
+function getUrl() {
   var url_start = "https://www.reddit.com/r/";
   var subreddit = "ImaginaryLandscapes";
   var param = "/.json?limit=";
   return url_start+subreddit+param;
 }
-function httpGetAsync(theUrl, callback, to_set) {
+
+/**
+ * Makes a asynchronous GET request with a given url, if a boolean function modifier
+ * is passed, then it is passed through to the callback function. If it is not set,
+ * then the callback function is called with only the response text.
+ *
+ * @param  {string}   theUrl   URL to request
+ * @param  {Function} callback callback function to process response
+ * @param  {boolean}  [func_mod=null] optional function modifier that is passed to callback
+ * @return {void}
+ */
+function httpGetAsync(theUrl, callback, func_mod=null) {
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function(){
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
-            callback(xmlHttp.responseText, to_set);
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+            if (func_mod!=null && func_mod!=undefined) {
+              callback(xmlHttp.responseText, func_mod);
+            } else {
+              callback(xmlHttp.responseText);
+            }
         }
     };
-    xmlHttp.open("GET", theUrl, true); // true for asynchronous
-    //xmlHttp.setRequestHeader('User-agent', 'chrome:imaginarylandscapes_wallpaper:v0.1 (by /u/begelsyah)');
+    xmlHttp.open("GET", theUrl, true); // true for asynchronous request
     xmlHttp.send(null);
 }
 
-function parseData(response, to_set) {
+/**
+ * Takes the json response from the Reddit GET request and parses through it for
+ * information we want. Stores each post with a defined url into an array as a dict with keys:
+ *    post_url->link to the first i.redditmedia host of the image
+ *    post_permalink->link to the actual reddit post
+ *    post_title->name of the post
+ *    post_author->name of the post submitter
+ *    post_actual_url->link to where the original image is hosted
+ * If to_set is true, then change the background image,
+ * else if to_set is false, then simply save the array into chrome local storage
+ *
+ * @param  {string}  response       Contains the json response in a string
+ * @param  {Boolean} [to_set=false] Boolean indicating whether to set the background
+ *                                  with the first image in the response
+ * @return {void}
+ */
+function parseData(response, to_set=false) {
   var resp_json = JSON.parse(response);
   var il_posts = resp_json.data.children;
   var post_info_list = [];
   il_posts.forEach(function(item, index) {
     var item_url = item.data.preview;
     var item_permalink = item.data.permalink;
-    if(item_url!= undefined) {
+    if (item_url!= undefined) {
       post_info_list.push({
           post_url: item_url.images[0].source.url,
           post_permalink: item.data.permalink,
@@ -34,15 +82,22 @@ function parseData(response, to_set) {
     }
   });
   if (to_set) {
-    setBackground(post_info_list);
+    setBackgroundAndInfo(post_info_list);
   } else {
     savePostInfoList(post_info_list);
   }
 }
 
-function setBackground(post_info_list) {
-  //resp_json.data.children[0].data.preview.images[0].source.url
-  //resp_json.data.children[0].data.url
+/**
+ * Takes an array of dictionaries and sets the background of the page to the first
+ * defined element. Removes each element it touches. Also sets the info dropdown information with the corresponding information
+ * and links. If the array is empty after setting the background, then make a GET request
+ * with the same url of the current array. Saves the modified array back to chrome storage
+ * when the method completes.
+ *
+ * @param {Array[dict]} post_info_list Array containing the dict of post information
+ */
+function setBackgroundAndInfo(post_info_list) {
   do {
     post_info = post_info_list.shift();
   } while (post_info.post_url == undefined);
@@ -60,24 +115,35 @@ function setBackground(post_info_list) {
   }
 }
 
+/**
+ * Takes an array and saves it to chrome local storage under the name 'post_info_list'
+ *
+ * @param  {Array} post_info_list
+ * @return {void}
+ */
 function savePostInfoList(post_info_list) {
   chrome.storage.local.set({post_info_list: post_info_list});
 }
 
+/**
+ * Accessor method for loading the background with an image. If there is no array
+ * of images currently stored in chrome local storage, make a GET request.
+ *
+ * @return {void}
+ */
 function loadBackground() {
-  /*
-  syntax for after first page searches
-  https://www.reddit.com/r/imaginarylandscapes/.json?count=50&after=t3_10omtd/
-  syntax for 100 il_posts
-  https://www.reddit.com/r/imaginarylandscapes/.json?limit=100
-  */
   chrome.storage.local.get(['post_info_list'], function(result) {
-    if (result.post_info_list == undefined || result.post_info_list == [] || result.post_info_list == '') {
+    if (result.post_info_list == undefined ||
+        result.post_info_list == [] ||
+        result.post_info_list == '') {
       httpGetAsync(getUrl(), parseData, true);
     } else {
-      setBackground(result.post_info_list);
+      setBackgroundAndInfo(result.post_info_list);
     }
   });
 }
 
+/**
+ * Entry point to loading a background
+ */
 loadBackground();

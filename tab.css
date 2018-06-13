@@ -6,7 +6,6 @@ html, body{
     background-repeat: no-repeat;
     background-size: cover;
 }
-
 .ib-link {
   color: black;
   font-size: 16px;
@@ -42,7 +41,6 @@ html, body{
   vertical-align: middle;
   width: 16px;
 }
-
 .m-links {
   max-height: 200px;
   overflow: auto;
@@ -60,7 +58,6 @@ html, body{
   opacity: .5;
   width: 32px;
 }
-
 .m-icon:hover {
   opacity: 1;
 }
@@ -167,17 +164,15 @@ html, body{
   outline: 1px solid #f1f1f1;
   outline: 1px solid rgba(241,241,241,0.7);
 }
-/* HIDE RADIO */
+/* Pulled from: http://jsbin.com/image-instead-of-radio-button/5/edit?html,css,output */
 label > input{
   position: absolute;
   visibility: hidden;
 }
-/* IMAGE STYLES */
 label > input + img{
   border: 2px solid transparent;
   cursor: pointer;
 }
- /* (RADIO CHECKED) IMAGE STYLES */
 label > input:checked + img{
   outline: 2px solid grey;
 }
