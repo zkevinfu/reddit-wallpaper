@@ -116,7 +116,7 @@ function processURL(url) {
 
 /**
  * Attatches a src to a favicon to a element with id equal to 'id'. If the src does
- * not exists, instead attatches /nofavi.png as the src
+ * not exists, instead attatches the default no favi icon as the src
  *
  * @param  {string} id  id of element to be attatched
  * @param  {string} src link to where the favicon is hosted
@@ -124,7 +124,7 @@ function processURL(url) {
  */
 function fillFaviImg(id, src) {
   document.getElementById(id).addEventListener("error", function() {
-    document.getElementById(id).setAttribute("src", "/nofavi.png");
+    document.getElementById(id).setAttribute("src", "icons/nofavi.png");
   });
   document.getElementById(id).setAttribute("src", src);
 }
@@ -142,7 +142,7 @@ function fillFavi(url, current) {
   fillFaviImg("favico_fav", "http://"+domain+"/favicon.ico");
   fillFaviImg("google_fav", "https://www.google.com/s2/favicons?domain="+domain);
   fillFaviImg("duck_fav", "https://icons.duckduckgo.com/ip2/"+domain+".ico");
-  fillFaviImg("nofavi_fav", "/nofavi.png");
+  fillFaviImg("nofavi_fav", "icons/nofavi.png");
 }
 
 /**
@@ -326,7 +326,7 @@ document.getElementById('add_quicklink_submit').addEventListener("click", functi
   } else {
     document.getElementById('quicklink_url').classList.remove("invalid");
   }
-  var favicon = "/nofavi.png";
+  var favicon = "icons/nofavi.png";
   var favirad= document.getElementsByName('changefavi');
   var i;
   for (i = 0, length = favirad.length; i < length; i++) {
