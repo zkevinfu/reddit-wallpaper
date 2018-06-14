@@ -32,19 +32,26 @@ var cur_url_list = [];
 var settings = [];
 
 /**
- * Dict containg a mapping from id to removeOnClick listeners
+ * Dict containg a mapping from id to event listener functions
  *
  * @type {Object}
  */
-var removeOnClickDict = {};
+var onClickFunctionDict = {};
 
 /**
- * Temp variable for storing removeOnClick functions before pushing them to
- * removeOnClickDict dictionary
+ * Global variable for storing event listener functions before pushing them to
+ * the id->function dictionary
  *
  * @type {function}
  */
-var removeOnClick;
+var onClickFunction = function(){};
+
+/**
+ * Global variable containing the currently modified quicklink, '' if no link is
+ * being modified.
+ * @type {String}
+ */
+var linkToEdit = '';
 
 /**
  * Hides all menu dropdowns in 'dropdown-box', and minimizes quicklink options with 'quicklink-options'
@@ -55,18 +62,21 @@ function hideDropdowns() {
 }
 
 /**
- * Resets the state of the document to that when first opened
+ * Resets the state of the document to that when first opened. Only quicklink
+ * extended options maintains it's current state
  */
 function resetStatus() {
   document.getElementById('quicklink_dropdown').classList.remove('show');
-  document.getElementById('add_quicklink_change_icon_dropdown').classList.remove('show');
+  document.getElementById('quicklink_change_icon_dropdown').classList.remove('show');
   document.getElementById('quicklink_name').classList.remove("invalid");
   document.getElementById('quicklink_url').classList.remove("invalid");
   clearQuicklinkInput();
   removeClass('variable-m-title');
   removeClass('m-text', 'to-remove');
+  removeClass('m-text', 'to-edit');
   removeClass('selected', 'selected');
-  removeOnClickDict = removeListener(removeOnClickDict);
+  onClickFunctionDict = removeListener(onClickFunctionDict);
+  linkToEdit = '';
 }
 
 /**
@@ -97,6 +107,16 @@ function clearQuicklinkInput() {
 }
 
 /**
+ * Helper function to remove the beginning protocol from urls if they exists
+ *
+ * @param  {string} url URL to process i.e http://example.com/exam/ple
+ * @return {[type]}     URL without front protocol i.e example.com/exam/ple
+ */
+function removeHTTP(url) {
+  return url.replace('https://','').replace('http://', '');
+}
+
+/**
  * Pulls the domain from a given url. Replaces the domain if it exists as a key in
  * 'url_with_favi_issues' with the respective value
  *
@@ -105,13 +125,27 @@ function clearQuicklinkInput() {
  */
 function processURL(url) {
   var reg = /^.+?(?=\/)/;
-  var domain = (url.replace('https://','').replace('http://', '')+'/').match(reg);
+  var domain = (url+'/').match(reg);
   domain = (domain==null)?'':domain[0];
   if (url_with_favi_issues[domain.replace('.','')]!==undefined) {
     return url_with_favi_issues[domain.replace('.','')];
   } else {
     return domain;
   }
+}
+
+/**
+ * Helper function to assign a favicon in the switch favicon dropdown a 'checked'
+ * parameter. Defaults to the first one if no parameter is passed
+ *
+ * @param {String} [current="favico_fav"] String indicating what favicon to set as checked:
+ *                                        'favico_fav'->/favicon.ico
+ *                                        'duck_fav'->duckduckgo
+ *                                        'google_fav'->google
+ *                                        'nofavi_fav'->/nofavi.png
+ */
+function setFavi(current="favico_fav") {
+  document.getElementById(current).checked = true;
 }
 
 /**
@@ -134,15 +168,14 @@ function fillFaviImg(id, src) {
  * hosts for a given URL string.
  *
  * @param  {string} url     url to get the favicon from
- * @param  {string} current favicon to be highlighted !!NOT CURRENTLY USED!!
  * @return {void}
  */
-function fillFavi(url, current) {
-  var domain = processURL(url);
-  fillFaviImg("favico_fav", "http://"+domain+"/favicon.ico");
-  fillFaviImg("google_fav", "https://www.google.com/s2/favicons?domain="+domain);
-  fillFaviImg("duck_fav", "https://icons.duckduckgo.com/ip2/"+domain+".ico");
-  fillFaviImg("nofavi_fav", "icons/nofavi.png");
+function fillFavi(url) {
+  var domain = processURL(removeHTTP(url));
+  fillFaviImg("favico_fav_img", "http://"+domain+"/favicon.ico");
+  fillFaviImg("google_fav_img", "https://www.google.com/s2/favicons?domain="+domain);
+  fillFaviImg("duck_fav_img", "https://icons.duckduckgo.com/ip2/"+domain+".ico");
+  fillFaviImg("nofavi_fav_img", "icons/nofavi.png");
 }
 
 /**
@@ -151,27 +184,66 @@ function fillFavi(url, current) {
  * @param  {string} link_name    string containing the name of the quicklink
  * @param  {string} link         string containing the url of the quicklink
  * @param  {string} link_favicon string containing the url to the favicon of the quicklink
+ * @param  {string} [favicon_ver = 'favico_fav']  string containing the method
+ *                                                we retrieve the favicon i.e google_fav
+ *                                                defaults to 'favico_fav'
  * @return {void}
  */
-function dropdownAppendLink(link_name, link, link_favicon) {
+function dropdownAppendLink(link_name, link, link_favicon, favicon_ver='favico_fav') {
   var node = document.createElement("a");
   var imgnode = document.createElement("img");
   var textnode = document.createTextNode(link_name);
   imgnode.setAttribute("class", "m-favicon");
   imgnode.setAttribute("src", link_favicon);
   node.setAttribute('id', link);
-  node.setAttribute('href', link);
   node.setAttribute('class', 'm-text');
+  node.setAttribute('data-value', link_name);
+  node.setAttribute('data-favicon_ver', favicon_ver);
+  node.setAttribute('href', link);
+
   node.appendChild(imgnode);
   node.appendChild(textnode);
   document.getElementById("menu_dropdown_links").appendChild(node);
 }
 
 /**
+ * Edits a quicklink to the quicklink dropdown menu_icon if a link is being edited,
+ * if not then appends a link with that information.
+ *
+ * @param  {string} link_name    string containing the name of the quicklink
+ * @param  {string} link         string containing the url of the quicklink
+ * @param  {string} link_favicon string containing the url to the favicon of the quicklink
+ * @param  {string} [favicon_ver = 'favico_fav']  string containing the method
+ *                                                we retrieve the favicon i.e google_fav
+ *                                                defaults to 'favico_fav'
+ * @return {void}
+ */
+function dropdownModifyLink(link_name, link, link_favicon, favicon_ver='favico_fav') {
+  if(linkToEdit === '' || linkToEdit === undefined || linkToEdit === null) {
+    dropdownAppendLink(link_name, link, link_favicon, favicon_ver);
+    return;
+  }
+  var node = linkToEdit;
+  var imgnode = linkToEdit.getElementsByTagName('img')[0];
+  linkToEdit.textContent = '';
+  var textnode = document.createTextNode(link_name);
+
+  imgnode.setAttribute("class", "m-favicon");
+  imgnode.setAttribute("src", link_favicon);
+  node.setAttribute('id', link);
+  node.setAttribute('class', 'm-text');
+  node.setAttribute('data-value', link_name);
+  node.setAttribute('data-favicon_ver', favicon_ver);
+  node.setAttribute('href', link);
+  node.appendChild(imgnode);
+  node.appendChild(textnode);
+}
+
+/**
  * removes a quicklink from the DOM
  *
  * @param  {string} link string containing the url of the link to be removed
- * @return {void}
+ * @return {int} int containg the position of the element removed, -1 if not found
  */
 function removeQuicklink(link) {
   var i;
@@ -179,9 +251,10 @@ function removeQuicklink(link) {
     if (cur_url_list[i].url == link) {
       cur_url_list.splice(i, 1);
       chrome.storage.sync.set({quicklinks:cur_url_list});
-      break;
+      return i;
     }
   }
+  return -1;
 }
 
 /**
@@ -211,7 +284,7 @@ chrome.storage.sync.get(['quicklinks', 'settings'], function(results) {
   cur_url_list = ((results.quicklink == '' || results.quicklinks == undefined) ? [] : results.quicklinks);
   settings = ((results.settings == '' || results.settings == undefined) ? [] : results.settings);
   cur_url_list.forEach(function(item, index) {
-    dropdownAppendLink(item.name, item.url, item.favicon);
+    dropdownAppendLink(item.name, item.url, item.favicon, item.favicon_ver);
   });
 });
 
@@ -221,7 +294,7 @@ chrome.storage.sync.get(['quicklinks', 'settings'], function(results) {
 document.onclick = function(event) {
   if (!document.getElementById('quicklink_options').contains(event.target) &&
       !document.getElementById('quicklink_dropdown').contains(event.target) &&
-      !document.getElementById('add_quicklink_change_icon_dropdown').contains(event.target) &&
+      !document.getElementById('quicklink_change_icon_dropdown').contains(event.target) &&
       !event.target.classList.contains("m-text")) {
     resetStatus();
   }
@@ -261,7 +334,7 @@ document.getElementById('setting_icon').addEventListener("click", function() {
 /**
  * Adds and event listener to the 'manage quicklinks' button that toggles the extended quicklink dropdown
  */
-document.getElementById('manage_quicklink').addEventListener("click", function() {
+document.getElementById('quicklink_manage').addEventListener("click", function() {
   document.getElementById("quicklink_options").classList.toggle("show");
 });
 
@@ -270,6 +343,8 @@ document.getElementById('manage_quicklink').addEventListener("click", function()
  */
 document.getElementById('add_quicklink').addEventListener("click", function() {
   resetStatus();
+  setFavi();
+  document.getElementById('ql_dropdown_add_title').classList.add("show");
   document.getElementById('add_quicklink').classList.add("selected");
   document.getElementById("quicklink_dropdown").classList.add("show");
   document.getElementById("quicklink_name").focus();
@@ -278,7 +353,7 @@ document.getElementById('add_quicklink').addEventListener("click", function() {
 /**
  * Adds a quicklink to 'change icon' button that opens up the change icon side-bar
  */
-document.getElementById('add_quicklink_change_icon_button').addEventListener("click", function() {
+document.getElementById('quicklink_change_icon_button').addEventListener("click", function() {
   if (document.getElementById('quicklink_url').value =='') {
     document.getElementById('quicklink_url').classList.add("invalid");
     document.getElementById('quicklink_url').focus();
@@ -287,7 +362,7 @@ document.getElementById('add_quicklink_change_icon_button').addEventListener("cl
     document.getElementById('quicklink_url').classList.remove("invalid");
   }
   fillFavi(document.getElementById('quicklink_url').value);
-  document.getElementById("add_quicklink_change_icon_dropdown").classList.toggle("show");
+  document.getElementById("quicklink_change_icon_dropdown").classList.toggle("show");
 });
 
 /**
@@ -298,7 +373,8 @@ document.getElementById('add_quicklink_change_icon_button').addEventListener("cl
  *    domain->quicklink domain
  *    favicon->quicklink favicon link
  */
-document.getElementById('add_quicklink_submit').addEventListener("click", function() {
+document.getElementById('quicklink_submit').addEventListener("click", function() {
+  var is_add = (linkToEdit === '' || linkToEdit === undefined || linkToEdit === null);
   var name = document.getElementById('quicklink_name').value;
   var url = document.getElementById('quicklink_url').value;
   if (name == '') {
@@ -315,10 +391,10 @@ document.getElementById('add_quicklink_submit').addEventListener("click", functi
   } else {
     document.getElementById('quicklink_url').classList.remove("invalid");
   }
-  var reg = /^.+?(?=\/)/;
+  url = removeHTTP(url);
   var domain = processURL(url);
   url = "http://"+url;
-  if (document.getElementById(url)!=undefined) {
+  if (document.getElementById(url)!=undefined && is_add) {
     document.getElementById('quicklink_url').value = "In Use!";
     document.getElementById('quicklink_url').classList.add("invalid");
     document.getElementById("quicklink_url").focus();
@@ -327,30 +403,68 @@ document.getElementById('add_quicklink_submit').addEventListener("click", functi
     document.getElementById('quicklink_url').classList.remove("invalid");
   }
   var favicon = "icons/nofavi.png";
-  var favirad= document.getElementsByName('changefavi');
+  var favicon_ver = "favico_fav";
+  var favirad= document.getElementsByClassName('fav-border');
+  var faviradin= document.getElementsByName('changefavi');
   var i;
+  fillFavi(domain);
   for (i = 0, length = favirad.length; i < length; i++) {
-    if (favirad[i].checked) {
-      favicon = document.getElementById(favirad[i].value).src;
+    if (faviradin[i].checked) {
+      favicon = favirad[i].src;
+      favicon_ver = faviradin[i].value;
       break;
     }
   }
+  clearQuicklinkInput();
   var quicklink_nameandurl = {
     name: name,
     url: url,
     domain: domain,
-    favicon: favicon
+    favicon: favicon,
+    favicon_ver: favicon_ver
   };
-  cur_url_list.push(quicklink_nameandurl);
+  if (is_add) {
+    cur_url_list.push(quicklink_nameandurl);
+    dropdownAppendLink(name, url, favicon, favicon_ver);
+  } else {
+    cur_url_list.splice(removeQuicklink(linkToEdit.id), 0 , quicklink_nameandurl);
+    dropdownModifyLink(name, url, favicon, favicon_ver);
+    document.getElementById('menu_icon').click();
+  }
   chrome.storage.sync.set({quicklinks:cur_url_list});
-  clearQuicklinkInput();
-  dropdownAppendLink(name, url, favicon);
+});
+
+/**
+ * Adds an event listener to the edit quicklink button. When clicked, binds an edit
+ * quicklink listener to all quicklinks. Stores the function bound to each quicklink to
+ * an id->function dict, with the id of the link as the key
+ */
+document.getElementById('edit_quicklink').addEventListener("click", function(){
+  resetStatus();
+  document.getElementById('edit_quicklink_title').classList.add("show");
+  document.getElementById('edit_quicklink').classList.add("selected");
+  var things = document.getElementsByClassName('m-text');
+  Array.prototype.forEach.call(things, function(thing) {
+    thing.classList.add('to-edit');
+    thing.addEventListener("click", onClickFunction = function(e) {
+      e.preventDefault();
+      setFavi(thing.dataset.favicon_ver);
+      fillFavi(thing.id);
+      linkToEdit = e.target;
+      document.getElementById('quicklink_name').value = thing.dataset.value;
+      document.getElementById('quicklink_url').value = thing.id;
+      document.getElementById('ql_dropdown_edit_title').classList.add("show");
+      document.getElementById("quicklink_dropdown").classList.add("show");
+      document.getElementById("quicklink_name").focus();
+    });
+    onClickFunctionDict[thing.id] = onClickFunction;
+  });
 });
 
 /**
  * Adds an event listener to the remove quicklink button. When clicked, binds a remove
  * quicklink listener to all quicklinks. Stores the function bound to each quicklink to
- * the 'removeOnClickDict' dict, with the id of the link as the key
+ * an id->function dict, with the id of the link as the key
  */
 document.getElementById('remove_quicklink').addEventListener("click", function() {
   resetStatus();
@@ -359,11 +473,11 @@ document.getElementById('remove_quicklink').addEventListener("click", function()
   var things = document.getElementsByClassName('m-text');
   Array.prototype.forEach.call(things, function(thing) {
     thing.classList.add('to-remove');
-    thing.addEventListener("click", removeOnClick = function(e) {
+    thing.addEventListener("click", onClickFunction = function(e) {
       e.preventDefault();
       document.getElementById('menu_dropdown_links').removeChild(thing);
       removeQuicklink(thing.id);
     });
-    removeOnClickDict[thing.id] = removeOnClick;
+    onClickFunctionDict[thing.id] = onClickFunction;
   });
 });

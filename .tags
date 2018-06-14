@@ -4,44 +4,48 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
-a	redditapitest.py	/^a = sample.read()$/;"	v
+a	archive/redditapitest.py	/^a = sample.read()$/;"	v
 browser_action	manifest.json	/^  "browser_action": {$/;"	f
-chrome_path	redditapitest.py	/^chrome_path = 'open -a \/Applications\/Google\\ Chrome.app %s'$/;"	v
+chrome_path	archive/redditapitest.py	/^chrome_path = 'open -a \/Applications\/Google\\ Chrome.app %s'$/;"	v
 chrome_url_overrides	manifest.json	/^  "chrome_url_overrides": {"newtab": "tab.html"}$/;"	f
-clearQuicklinkInput	tab.js	/^function clearQuicklinkInput(){$/;"	f
+clearQuicklinkInput	tab.js	/^function clearQuicklinkInput() {$/;"	f
 cur_url_list	tab.js	/^var cur_url_list = [];$/;"	v
 default_icon	manifest.json	/^   "default_icon": "icon.png",$/;"	f
 default_popup	manifest.json	/^   "default_popup": "popup.html"$/;"	f
 description	manifest.json	/^  "description": "New Tab with rotating wallpaper from r\/ImaginaryLandscapes",$/;"	f
 document.onclick	tab.js	/^});$/;"	f
-dropdownAppendLink	tab.js	/^function dropdownAppendLink(link_name, link, link_favicon) {$/;"	f
-fillFavi	tab.js	/^function fillFavi(url, current) {$/;"	f
+dropdownAppendLink	tab.js	/^function dropdownAppendLink(link_name, link, link_favicon, favicon_ver='favico_fav') {$/;"	f
+dropdownModifyLink	tab.js	/^function dropdownModifyLink(link_name, link, link_favicon, favicon_ver='favico_fav') {$/;"	f
+fillFavi	tab.js	/^function fillFavi(url) {$/;"	f
 fillFaviImg	tab.js	/^function fillFaviImg(id, src) {$/;"	f
-getUrl	background_loader.js	/^function getUrl(){$/;"	f
+getUrl	background_loader.js	/^function getUrl() {$/;"	f
 hideDropdowns	tab.js	/^function hideDropdowns() {$/;"	f
-httpGetAsync	background_loader.js	/^function httpGetAsync(theUrl, callback, to_set) {$/;"	f
-j	redditapitest.py	/^j = json.loads(r.text)$/;"	v
-json	redditapitest.py	/^import json$/;"	i
+httpGetAsync	background_loader.js	/^function httpGetAsync(theUrl, callback, func_mod=null) {$/;"	f
+j	archive/redditapitest.py	/^j = json.loads(r.text)$/;"	v
+json	archive/redditapitest.py	/^import json$/;"	i
+linkToEdit	tab.js	/^var linkToEdit = '';$/;"	v
 loadBackground	background_loader.js	/^function loadBackground() {$/;"	f
 manifest_version	manifest.json	/^  "manifest_version": 2,$/;"	f
 name	manifest.json	/^  "name": "New Tab-er",$/;"	f
-parseData	background_loader.js	/^function parseData(response, to_set) {$/;"	f
+onClickFunction	tab.js	/^var onClickFunction = function(){};$/;"	f
+parseData	background_loader.js	/^function parseData(response, to_set=false) {$/;"	f
 permissions	manifest.json	/^  "permissions": [$/;"	f
 processURL	tab.js	/^function processURL(url) {$/;"	f
-r	redditapitest.py	/^r = requests.get(url, headers = {'User-agent': 'img_puller'})$/;"	v
+r	archive/redditapitest.py	/^r = requests.get(url, headers = {'User-agent': 'img_puller'})$/;"	v
 removeClass	tab.js	/^function removeClass(class_name, to_remove = 'show') {$/;"	f
-removeListener	tab.js	/^function removeListener(to_remove, class_name = 'm-text'){$/;"	f
-removeOnClick	tab.js	/^var removeOnClick;$/;"	v
+removeHTTP	tab.js	/^function removeHTTP(url) {$/;"	f
+removeListener	tab.js	/^function removeListener(to_remove, func_type = 'click') {$/;"	f
 removeQuicklink	tab.js	/^function removeQuicklink(link) {$/;"	f
-requests	redditapitest.py	/^import requests$/;"	i
+requests	archive/redditapitest.py	/^import requests$/;"	i
 resetStatus	tab.js	/^function resetStatus() {$/;"	f
-sample	redditapitest.py	/^sample = open('sample.txt', 'r')$/;"	v
+sample	archive/redditapitest.py	/^sample = open('sample.txt', 'r')$/;"	v
 savePostInfoList	background_loader.js	/^function savePostInfoList(post_info_list) {$/;"	f
-setBackground	background_loader.js	/^function setBackground(post_info_list) {$/;"	f
+setBackgroundAndInfo	background_loader.js	/^function setBackgroundAndInfo(post_info_list) {$/;"	f
+setFavi	tab.js	/^function setFavi(current="favico_fav") {$/;"	f
 setPermalink	popup.js	/^function setPermalink(){$/;"	f
 settings	tab.js	/^var settings = [];$/;"	v
-url	redditapitest.py	/^url = "https:\/\/www.reddit.com\/r\/imaginarylandscapes.json"$/;"	v
+url	archive/redditapitest.py	/^url = "https:\/\/www.reddit.com\/r\/imaginarylandscapes.json"$/;"	v
 url_with_favi_issues.gmailcom	tab.js	/^var url_with_favi_issues = {$/;"	p
 version	manifest.json	/^  "version": "0.8",$/;"	f
-webbrowser	redditapitest.py	/^import webbrowser$/;"	i
+webbrowser	archive/redditapitest.py	/^import webbrowser$/;"	i
 xmlHttp.onreadystatechange	background_loader.js	/^    var xmlHttp = new XMLHttpRequest();$/;"	f
