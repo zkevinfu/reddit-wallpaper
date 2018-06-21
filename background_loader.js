@@ -10,17 +10,19 @@
 * @version 0.1
 */
 
+
+var r_subreddit = "imaginarylandscapes";
+
 /**
  * Returns the URL to make a GET request from, based off of stored settings.
  *
  * @return {string} full url to be request with params. i.e
  *                  'https://www.reddit.com/r/ImaginaryLandscapes/.json?limit='
  */
-function getUrl() {
+function getUrl(limit = "25") {
   var url_start = "https://www.reddit.com/r/";
-  var subreddit = "ImaginaryLandscapes";
   var param = "/.json?limit=";
-  return url_start+subreddit+param;
+  return url_start+r_subreddit+param+limit;
 }
 
 /**
@@ -88,6 +90,10 @@ function parseData(response, to_set=false) {
   }
 }
 
+function isSet(param) {
+  return !(param == undefined || param == [] || param == '');
+}
+
 /**
  * Takes an array of dictionaries and sets the background of the page to the first
  * defined element. Removes each element it touches. Also sets the info dropdown information with the corresponding information
@@ -122,7 +128,10 @@ function setBackgroundAndInfo(post_info_list) {
  * @return {void}
  */
 function savePostInfoList(post_info_list) {
-  chrome.storage.local.set({post_info_list: post_info_list});
+  chrome.storage.local.get(['subreddit_post_dict'], function(result) {
+    result.subreddit_post_dict[r_subreddit] = post_info_list;
+    chrome.storage.local.set({subreddit_post_dict: result.subreddit_post_dict});
+  });
 }
 
 /**
@@ -132,14 +141,21 @@ function savePostInfoList(post_info_list) {
  * @return {void}
  */
 function loadBackground() {
-  chrome.storage.local.get(['post_info_list'], function(result) {
-    if (result.post_info_list == undefined ||
-        result.post_info_list == [] ||
-        result.post_info_list == '') {
-      httpGetAsync(getUrl(), parseData, true);
-    } else {
-      setBackgroundAndInfo(result.post_info_list);
+  chrome.storage.sync.get(['settings'], function(result){
+    if (!isSet(result.settings)) {
+      // TODO: Initialize Settings
     }
+    r_subreddit = result.settings.subreddits[
+      Math.floor(Math.random() * result.settings.subreddits.length)
+    ];
+    chrome.storage.local.get(['subreddit_post_dict'], function(result) {
+      if (!isSet(result.subreddit_post_dict[r_subreddit])) {
+        // TODO: Fill the dict
+        httpGetAsync(getUrl(), parseData, true);
+      } else {
+        setBackgroundAndInfo(result.subreddit_post_dict[r_subreddit]);
+      }
+    });
   });
 }
 

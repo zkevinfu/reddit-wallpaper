@@ -18,9 +18,10 @@ dropdownAppendLink	tab.js	/^function dropdownAppendLink(link_name, link, link_fa
 dropdownModifyLink	tab.js	/^function dropdownModifyLink(link_name, link, link_favicon, favicon_ver='favico_fav') {$/;"	f
 fillFavi	tab.js	/^function fillFavi(url) {$/;"	f
 fillFaviImg	tab.js	/^function fillFaviImg(id, src) {$/;"	f
-getUrl	background_loader.js	/^function getUrl() {$/;"	f
+getUrl	background_loader.js	/^function getUrl(limit = "25") {$/;"	f
 hideDropdowns	tab.js	/^function hideDropdowns() {$/;"	f
 httpGetAsync	background_loader.js	/^function httpGetAsync(theUrl, callback, func_mod=null) {$/;"	f
+isSet	background_loader.js	/^function isSet(param) {$/;"	f
 j	archive/redditapitest.py	/^j = json.loads(r.text)$/;"	v
 json	archive/redditapitest.py	/^import json$/;"	i
 linkToEdit	tab.js	/^var linkToEdit = '';$/;"	v
@@ -32,6 +33,7 @@ parseData	background_loader.js	/^function parseData(response, to_set=false) {$/;
 permissions	manifest.json	/^  "permissions": [$/;"	f
 processURL	tab.js	/^function processURL(url) {$/;"	f
 r	archive/redditapitest.py	/^r = requests.get(url, headers = {'User-agent': 'img_puller'})$/;"	v
+r_subreddit	background_loader.js	/^var r_subreddit = "imaginarylandscapes";$/;"	v
 removeClass	tab.js	/^function removeClass(class_name, to_remove = 'show') {$/;"	f
 removeHTTP	tab.js	/^function removeHTTP(url) {$/;"	f
 removeListener	tab.js	/^function removeListener(to_remove, func_type = 'click') {$/;"	f
