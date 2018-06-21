@@ -113,6 +113,8 @@ function setBackgroundAndInfo(post_info_list) {
   document.getElementById('info_title').href = post_info.post_actual_url;
   document.getElementById('info_author').textContent = "Posted by: "+post_info.post_author;
   document.getElementById('info_author').href = "https://reddit.com/user/"+post_info.post_author;
+  document.getElementById('info_subreddit').textContent = r_subreddit;
+  document.getElementById('info_subreddit').href = "https://reddit.com/r/"+r_subreddit;
   document.getElementById('info_permalink').href = "https://reddit.com"+post_info.post_permalink;
   if (post_info_list.length === 0) {
     httpGetAsync(getUrl(), parseData, false);
