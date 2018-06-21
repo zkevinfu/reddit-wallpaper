@@ -131,6 +131,9 @@ function setBackgroundAndInfo(post_info_list) {
  */
 function savePostInfoList(post_info_list) {
   chrome.storage.local.get(['subreddit_post_dict'], function(result) {
+    if(!isSet(result.subreddit_post_dict)){
+      result.subreddit_post_dict = {};
+    }
     result.subreddit_post_dict[r_subreddit] = post_info_list;
     chrome.storage.local.set({subreddit_post_dict: result.subreddit_post_dict});
   });
@@ -151,7 +154,8 @@ function loadBackground() {
       Math.floor(Math.random() * result.settings.subreddits.length)
     ];
     chrome.storage.local.get(['subreddit_post_dict'], function(result) {
-      if (!isSet(result.subreddit_post_dict[r_subreddit])) {
+      if (!isSet(result.subreddit_post_dict) ||
+          !isSet(result.subreddit_post_dict[r_subreddit])) {
         // TODO: Fill the dict
         httpGetAsync(getUrl(), parseData, true);
       } else {
