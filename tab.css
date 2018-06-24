@@ -105,7 +105,7 @@ html, body{
   border-radius: 5%;
   cursor: pointer;
 }
-.quicklink-title {
+.ext-title {
   padding: 10px 0;
 }
 .no-padding {
@@ -138,6 +138,10 @@ html, body{
 }
 .s-dropdown {
   margin-left: 0;
+  margin-top: 40px;
+}
+.sr-dropdown {
+  margin-left: 181px;
   margin-top: 40px;
 }
 .aqlci-dropdown {

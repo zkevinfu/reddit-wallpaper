@@ -292,12 +292,23 @@ chrome.storage.sync.get(['quicklinks', 'settings'], function(results) {
  * Sets an onclick for the document that closes all open menu things
  */
 document.onclick = function(event) {
-  if (!document.getElementById('quicklink_options').contains(event.target) &&
-      !document.getElementById('quicklink_dropdown').contains(event.target) &&
-      !document.getElementById('quicklink_change_icon_dropdown').contains(event.target) &&
-      !event.target.classList.contains("m-text")) {
-    resetStatus();
+  if(event.target.classList.contains("m-text")){
+    return;
   }
+  var ignoreIDs = [
+    'quicklink_options',
+    'quicklink_dropdown',
+    'quicklink_change_icon_dropdown',
+    'subreddit_dropdown',
+    'setting_dropdown'
+  ];
+  var i;
+  for (i = 0; i < ignoreIDs.length; i++){
+    if (document.getElementById(ignoreIDs[i]).contains(event.target)){
+      return;
+    }
+  }
+  resetStatus();
   if (!document.getElementById('dropdown').contains(event.target) &&
       !event.target.classList.contains("m-text")) {
     hideDropdowns();

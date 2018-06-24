@@ -35,8 +35,8 @@
     </div>
     <div id="quicklink_dropdown" class="dropdown-box dropdown-content ql-dropdown">
       <div class="quicklink-input no-padding">
-        <div id="ql_dropdown_add_title" class="quicklink-title variable-m-title title">Add Quicklink</div>
-        <div id="ql_dropdown_edit_title" class="quicklink-title variable-m-title title">Edit Quicklink</div>
+        <div id="ql_dropdown_add_title" class="ext-title variable-m-title title">Add Quicklink</div>
+        <div id="ql_dropdown_edit_title" class="ext-title variable-m-title title">Edit Quicklink</div>
         Name:<input id="quicklink_name" type="text" size="17"/> <br /><br />
         URL: <input id="quicklink_url" type="text" size="17"/>
       </div>
@@ -74,10 +74,25 @@
     <img id="setting_icon" class="m-icon" src="icons/cog.png" />
     <span id="setting_arrow" class="dropdown-box dropdown-arrow s-arrow"></span>
     <div id="setting_dropdown" class="dropdown-box dropdown-content s-dropdown">
-      hello
+      <div id="setting_subreddit_list" class="m-list">
+
+      </div>
+      <a id="add_subreddit">Add Subreddit</a>
+    </div>
+    <div id="subreddit_dropdown" class="dropdown-box dropdown-content sr-dropdown">
+      <div class="no-padding">
+        <div id="sr_dropdown_add_title" class="ext-title variable-m-title title">Add Subreddit</div>
+        <div id="sr_dropdown_edit_title" class="ext-title variable-m-title title">Edit Subreddit</div>
+        Subreddit: <input id="subreddit_name" type="text" size="14"/> <br /><br />
+        Posts: <input id="subreddit_num_posts" type="number" min = "1" max="100"/>
+        <span class="ext-title">NSFW? <input id="nswf_check" type="checkbox" /></span>
+      </div>
+      <hr />
+      <a id="subreddit_remove" class="change-icon-button">Remove</a>
+      <a id="subreddit_submit" class="submit-button">Submit</a>
     </div>
   </div>
 </body>
-<script src="background_loader.js"></script>
 <script src="tab.js"></script>
+<script src="background_loader.js"></script>
 </html>

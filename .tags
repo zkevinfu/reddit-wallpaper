@@ -5,6 +5,7 @@
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
 a	archive/redditapitest.py	/^a = sample.read()$/;"	v
+appendSubreddit	background_loader.js	/^function appendSubreddit(subreddit){$/;"	f
 browser_action	manifest.json	/^  "browser_action": {$/;"	f
 chrome_path	archive/redditapitest.py	/^chrome_path = 'open -a \/Applications\/Google\\ Chrome.app %s'$/;"	v
 chrome_url_overrides	manifest.json	/^  "chrome_url_overrides": {"newtab": "tab.html"}$/;"	f
@@ -18,12 +19,17 @@ dropdownAppendLink	tab.js	/^function dropdownAppendLink(link_name, link, link_fa
 dropdownModifyLink	tab.js	/^function dropdownModifyLink(link_name, link, link_favicon, favicon_ver='favico_fav') {$/;"	f
 fillFavi	tab.js	/^function fillFavi(url) {$/;"	f
 fillFaviImg	tab.js	/^function fillFaviImg(id, src) {$/;"	f
-getUrl	background_loader.js	/^function getUrl(limit = "25") {$/;"	f
+getUrl	background_loader.js	/^function getUrl(limit = "100") {$/;"	f
 hideDropdowns	tab.js	/^function hideDropdowns() {$/;"	f
 httpGetAsync	background_loader.js	/^function httpGetAsync(theUrl, callback, func_mod=null) {$/;"	f
+init	background_loader.js	/^var init = true;$/;"	v
 isSet	background_loader.js	/^function isSet(param) {$/;"	f
 j	archive/redditapitest.py	/^j = json.loads(r.text)$/;"	v
+j	jsonparse.py	/^j = json.loads(r.text)$/;"	v
 json	archive/redditapitest.py	/^import json$/;"	i
+json	jsonparse.py	/^import json$/;"	i
+keep_nsfw	background_loader.js	/^var keep_nsfw = false;$/;"	v
+l	jsonparse.py	/^l = []$/;"	v
 linkToEdit	tab.js	/^var linkToEdit = '';$/;"	v
 loadBackground	background_loader.js	/^function loadBackground() {$/;"	f
 manifest_version	manifest.json	/^  "manifest_version": 2,$/;"	f
@@ -31,14 +37,20 @@ name	manifest.json	/^  "name": "New Tab-er",$/;"	f
 onClickFunction	tab.js	/^var onClickFunction = function(){};$/;"	f
 parseData	background_loader.js	/^function parseData(response, to_set=false) {$/;"	f
 permissions	manifest.json	/^  "permissions": [$/;"	f
+populateSettingSubreddits	background_loader.js	/^function populateSettingSubreddits(subreddits){$/;"	f
 processURL	tab.js	/^function processURL(url) {$/;"	f
 r	archive/redditapitest.py	/^r = requests.get(url, headers = {'User-agent': 'img_puller'})$/;"	v
+r	jsonparse.py	/^r = requests.get(url, headers = {'User-agent': 'reddit_nsfw_list_poller'})$/;"	v
 r_subreddit	background_loader.js	/^var r_subreddit = "imaginarylandscapes";$/;"	v
+re	jsonparse.py	/^import re$/;"	i
+redditToEdit	background_loader.js	/^var redditToEdit = '';$/;"	v
+reg	jsonparse.py	/^reg = re.compile('\/r\/[a-zA-Z0-9]+ ')$/;"	v
 removeClass	tab.js	/^function removeClass(class_name, to_remove = 'show') {$/;"	f
 removeHTTP	tab.js	/^function removeHTTP(url) {$/;"	f
 removeListener	tab.js	/^function removeListener(to_remove, func_type = 'click') {$/;"	f
 removeQuicklink	tab.js	/^function removeQuicklink(link) {$/;"	f
 requests	archive/redditapitest.py	/^import requests$/;"	i
+requests	jsonparse.py	/^import requests$/;"	i
 resetStatus	tab.js	/^function resetStatus() {$/;"	f
 sample	archive/redditapitest.py	/^sample = open('sample.txt', 'r')$/;"	v
 savePostInfoList	background_loader.js	/^function savePostInfoList(post_info_list) {$/;"	f
@@ -46,8 +58,11 @@ setBackgroundAndInfo	background_loader.js	/^function setBackgroundAndInfo(post_i
 setFavi	tab.js	/^function setFavi(current="favico_fav") {$/;"	f
 setPermalink	popup.js	/^function setPermalink(){$/;"	f
 settings	tab.js	/^var settings = [];$/;"	v
+storeSettings	background_loader.js	/^function storeSettings(settings){$/;"	f
 url	archive/redditapitest.py	/^url = "https:\/\/www.reddit.com\/r\/imaginarylandscapes.json"$/;"	v
+url	jsonparse.py	/^url = "https:\/\/www.reddit.com\/r\/ListOfSubreddits\/wiki\/nsfw.json"$/;"	v
 url_with_favi_issues.gmailcom	tab.js	/^var url_with_favi_issues = {$/;"	p
+verifyPost	background_loader.js	/^function verifyPost(post){$/;"	f
 version	manifest.json	/^  "version": "0.8",$/;"	f
 webbrowser	archive/redditapitest.py	/^import webbrowser$/;"	i
 xmlHttp.onreadystatechange	background_loader.js	/^    var xmlHttp = new XMLHttpRequest();$/;"	f

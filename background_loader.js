@@ -10,16 +10,22 @@
 * @version 0.1
 */
 
-
 var r_subreddit = "imaginarylandscapes";
 
+var settings_dict = {};
+
+var init = true;
+
+var keep_nsfw = false;
+
+var redditToEdit = '';
 /**
  * Returns the URL to make a GET request from, based off of stored settings.
  *
  * @return {string} full url to be request with params. i.e
  *                  'https://www.reddit.com/r/ImaginaryLandscapes/.json?limit='
  */
-function getUrl(limit = "25") {
+function getUrl(limit = "100") {
   var url_start = "https://www.reddit.com/r/";
   var param = "/.json?limit=";
   return url_start+r_subreddit+param+limit;
@@ -79,6 +85,8 @@ function parseData(response, to_set=false) {
           post_permalink: item.data.permalink,
           post_title: item.data.title,
           post_author: item.data.author,
+          post_upvotes: item.data.ups,
+          post_nsfw: item.data.over_18,
           post_actual_url: item.data.url
         });
     }
@@ -94,6 +102,14 @@ function isSet(param) {
   return !(param == undefined || param == [] || param == '');
 }
 
+function verifyPost(post){
+  if (post.post_url == undefined ||
+      post.post_upvotes < 0 ||
+      (!keep_nsfw && post.post_nsfw == true)) {
+    return false;
+  }
+  return true;
+}
 /**
  * Takes an array of dictionaries and sets the background of the page to the first
  * defined element. Removes each element it touches. Also sets the info dropdown information with the corresponding information
@@ -104,16 +120,17 @@ function isSet(param) {
  * @param {Array[dict]} post_info_list Array containing the dict of post information
  */
 function setBackgroundAndInfo(post_info_list) {
+  var post_info;
   do {
     post_info = post_info_list.shift();
-  } while (post_info.post_url == undefined);
+  } while (!verifyPost(post_info));
 
   document.body.style.backgroundImage = "url("+post_info.post_url+")";
   document.getElementById('info_title').textContent = post_info.post_title;
   document.getElementById('info_title').href = post_info.post_actual_url;
   document.getElementById('info_author').textContent = "Posted by: "+post_info.post_author;
   document.getElementById('info_author').href = "https://reddit.com/user/"+post_info.post_author;
-  document.getElementById('info_subreddit').textContent = r_subreddit;
+  document.getElementById('info_subreddit').textContent = "r/"+r_subreddit;
   document.getElementById('info_subreddit').href = "https://reddit.com/r/"+r_subreddit;
   document.getElementById('info_permalink').href = "https://reddit.com"+post_info.post_permalink;
   if (post_info_list.length === 0) {
@@ -139,6 +156,22 @@ function savePostInfoList(post_info_list) {
   });
 }
 
+function appendSubreddit(subreddit){
+  var node = document.createElement("a");
+  var textnode = document.createTextNode(subreddit);
+  node.appendChild(textnode);
+  document.getElementById("setting_subreddit_list").appendChild(node);
+}
+
+function populateSettingSubreddits(subreddits){
+  Object.keys(subreddits).forEach(function(subreddit){
+    appendSubreddit(subreddit);
+  });
+}
+
+function storeSettings(settings){
+  keep_nsfw = settings.subreddits[r_subreddit].nsfw;
+}
 /**
  * Accessor method for loading the background with an image. If there is no array
  * of images currently stored in chrome local storage, make a GET request.
@@ -150,21 +183,51 @@ function loadBackground() {
     if (!isSet(result.settings)) {
       // TODO: Initialize Settings
     }
-    r_subreddit = result.settings.subreddits[
-      Math.floor(Math.random() * result.settings.subreddits.length)
+    r_subreddit = Object.keys(result.settings.subreddits)[
+      Math.floor(Math.random() * Object.keys(result.settings.subreddits).length)
     ];
+    if(init){
+      populateSettingSubreddits(result.settings.subreddits);
+      settings_dict = result.settings;
+    }
+    storeSettings(result.settings);
     chrome.storage.local.get(['subreddit_post_dict'], function(result) {
       if (!isSet(result.subreddit_post_dict) ||
           !isSet(result.subreddit_post_dict[r_subreddit])) {
-        // TODO: Fill the dict
         httpGetAsync(getUrl(), parseData, true);
       } else {
         setBackgroundAndInfo(result.subreddit_post_dict[r_subreddit]);
       }
     });
+    init = false;
   });
 }
 
+document.getElementById("add_subreddit").addEventListener("click", function(){
+  document.getElementById('sr_dropdown_add_title').classList.add("show");
+  document.getElementById("subreddit_dropdown").classList.add("show");
+});
+
+document.getElementById("subreddit_submit").addEventListener("click", function(){
+  //var is_add = (subredditToEdit === '' || subredditToEdit === undefined || subredditToEdit === null);
+  var subreddit = document.getElementById('subreddit_name').value;
+  if (subreddit == '') {
+    document.getElementById('subreddit_name').classList.add("invalid");
+    document.getElementById("subreddit_name").focus();
+    return;
+  } else {
+    document.getElementById('subreddit_name').classList.remove("invalid");
+  }
+  var count = 100;
+  var nsfw = false;
+  var upvotes = 0;
+  settings_dict.subreddits[subreddit] = {
+    count: count,
+    nsfw: nsfw,
+    upvotes: upvotes
+  };
+  chrome.storage.sync.set({settings:settings_dict});
+});
 /**
  * Entry point to loading a background
  */
