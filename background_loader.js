@@ -224,7 +224,7 @@ document.getElementById("subreddit_submit").addEventListener("click", function()
   }
   subreddit = subreddit.toLowerCase();
   var count = document.getElementById('subreddit_num_posts').value;
-  if (!count.isNumeric()){
+  if (!Number.isInteger(count)){
     count = 25;
   } else if (count <= 0 ){
     count = 1;
@@ -236,7 +236,7 @@ document.getElementById("subreddit_submit").addEventListener("click", function()
     nsfw = false;
   }
   var upvotes = document.getElementById('subreddit_upvote_threshold').value;
-  if (!upvotes.isNumeric()) {
+  if (!Number.isInteger(upvotes)) {
     upvotes = 0;
   }
   settings_dict.subreddits[subreddit] = {
