@@ -66,10 +66,21 @@ function hideDropdowns() {
  * extended options maintains it's current state
  */
 function resetStatus() {
-  document.getElementById('quicklink_dropdown').classList.remove('show');
-  document.getElementById('quicklink_change_icon_dropdown').classList.remove('show');
-  document.getElementById('quicklink_name').classList.remove("invalid");
-  document.getElementById('quicklink_url').classList.remove("invalid");
+  var removeShow = [
+    'quicklink_dropdown',
+    'quicklink_change_icon_dropdown',
+    'subreddit_remove',
+    'sr_dropdown_add_title',
+    'sr_dropdown_edit_title'
+  ];
+  var i;
+  for (i = 0; i < removeShow.length; i++){
+    document.getElementById(removeShow[i]).classList.remove('show');
+  }
+  var elements = document.getElementsByClassName("invalid");
+  for (i = 0; i < elements.length; i++) {
+     elements[i].classList.remove("invalid");
+  }
   clearQuicklinkInput();
   removeClass('variable-m-label');
   removeClass('m-text', 'to-remove');

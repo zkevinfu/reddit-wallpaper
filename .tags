@@ -58,7 +58,7 @@ setBackgroundAndInfo	background_loader.js	/^function setBackgroundAndInfo(post_i
 setFavi	tab.js	/^function setFavi(current="favico_fav") {$/;"	f
 setPermalink	popup.js	/^function setPermalink(){$/;"	f
 settings	tab.js	/^var settings = [];$/;"	v
-storeSettings	background_loader.js	/^function storeSettings(settings){$/;"	f
+subredditRemoveFunction	background_loader.js	/^var subredditRemoveFunction;$/;"	v
 url	archive/redditapitest.py	/^url = "https:\/\/www.reddit.com\/r\/imaginarylandscapes.json"$/;"	v
 url	jsonparse.py	/^url = "https:\/\/www.reddit.com\/r\/ListOfSubreddits\/wiki\/nsfw.json"$/;"	v
 url_with_favi_issues.gmailcom	tab.js	/^var url_with_favi_issues = {$/;"	p

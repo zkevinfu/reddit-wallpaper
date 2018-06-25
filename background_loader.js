@@ -14,6 +14,8 @@ var r_subreddit = "imaginarylandscapes";
 
 var settings_dict = {};
 
+var subredditRemoveFunction;
+
 var init = true;
 
 var keep_nsfw = false;
@@ -159,10 +161,30 @@ function savePostInfoList(post_info_list) {
 function appendSubreddit(subreddit){
   var node = document.createElement("a");
   var textnode = document.createTextNode(subreddit);
-  node.setAttribute('id', "list_"+subreddit);
+  node.setAttribute('id', subreddit);
   node.setAttribute('class', 'i-footer');
   node.appendChild(textnode);
-  document.getElementById("setting_subreddit_list").appendChild(node);
+  document.getElementById("subreddit_list").appendChild(node);
+  node.addEventListener("click", function() {
+    resetStatus();
+    if (subredditRemoveFunction != undefined) {
+      document.getElementById("subreddit_remove").removeEventListener("click", subredditRemoveFunction);
+    }
+    document.getElementById('sr_dropdown_edit_title').classList.add("show");
+    document.getElementById('subreddit_remove').classList.add("show");
+    document.getElementById("subreddit_dropdown").classList.add("show");
+    document.getElementById("subreddit_advanced").classList.add("show");
+    document.getElementById("subreddit_remove").addEventListener("click", subredditRemoveFunction = function(){
+      chrome.storage.local.get(['subreddit_post_dict'], function(result) {
+        delete result.subreddit_post_dict[node.id];
+        chrome.storage.local.set({subreddit_post_dict: result.subreddit_post_dict});
+      });
+      delete settings_dict.subreddits[node.id];
+      chrome.storage.sync.set({settings:settings_dict});
+      document.getElementById("subreddit_list").removeChild(node);
+      document.getElementById('setting_icon').click();
+    });
+  });
 }
 
 function populateSettingSubreddits(subreddits){
@@ -171,9 +193,6 @@ function populateSettingSubreddits(subreddits){
   });
 }
 
-function storeSettings(settings){
-  keep_nsfw = settings.subreddits[r_subreddit].nsfw;
-}
 /**
  * Accessor method for loading the background with an image. If there is no array
  * of images currently stored in chrome local storage, make a GET request.
@@ -192,7 +211,6 @@ function loadBackground() {
       populateSettingSubreddits(result.settings.subreddits);
       settings_dict = result.settings;
     }
-    storeSettings(result.settings);
     chrome.storage.local.get(['subreddit_post_dict'], function(result) {
       if (!isSet(result.subreddit_post_dict) ||
           !isSet(result.subreddit_post_dict[r_subreddit])) {
@@ -206,6 +224,7 @@ function loadBackground() {
 }
 
 document.getElementById("add_subreddit").addEventListener("click", function() {
+  resetStatus();
   document.getElementById('sr_dropdown_add_title').classList.add("show");
   document.getElementById("subreddit_dropdown").classList.add("show");
   document.getElementById("subreddit_advanced").classList.add("show");
