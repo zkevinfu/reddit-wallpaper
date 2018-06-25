@@ -71,7 +71,7 @@ function resetStatus() {
   document.getElementById('quicklink_name').classList.remove("invalid");
   document.getElementById('quicklink_url').classList.remove("invalid");
   clearQuicklinkInput();
-  removeClass('variable-m-title');
+  removeClass('variable-m-label');
   removeClass('m-text', 'to-remove');
   removeClass('m-text', 'to-edit');
   removeClass('selected', 'selected');

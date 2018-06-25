@@ -9,11 +9,11 @@
     <img id="menu_icon" class="m-icon" src="icons/menu_icon.png"/>
     <span id="menu_arrow" class="dropdown-box dropdown-arrow m-arrow"></span>
     <div id="menu_dropdown" class="dropdown-box dropdown-content m-dropdown">
-      <div id="remove_quicklink_title" class="no-padding variable-m-title">
+      <div id="remove_quicklink_title" class="no-padding variable-m-label">
         <div class="title">Remove Quicklinks</div>
         <hr />
       </div>
-      <div id="edit_quicklink_title" class="no-padding variable-m-title">
+      <div id="edit_quicklink_title" class="no-padding variable-m-label">
         <div class="title">Edit Quicklinks</div>
         <hr />
       </div>
@@ -35,8 +35,8 @@
     </div>
     <div id="quicklink_dropdown" class="dropdown-box dropdown-content ql-dropdown">
       <div class="quicklink-input no-padding">
-        <div id="ql_dropdown_add_title" class="ext-title variable-m-title title">Add Quicklink</div>
-        <div id="ql_dropdown_edit_title" class="ext-title variable-m-title title">Edit Quicklink</div>
+        <div id="ql_dropdown_add_title" class="ext-title variable-m-label title">Add Quicklink</div>
+        <div id="ql_dropdown_edit_title" class="ext-title variable-m-label title">Edit Quicklink</div>
         Name:<input id="quicklink_name" type="text" size="17"/> <br /><br />
         URL: <input id="quicklink_url" type="text" size="17"/>
       </div>
@@ -81,14 +81,15 @@
     </div>
     <div id="subreddit_dropdown" class="dropdown-box dropdown-content sr-dropdown">
       <div class="no-padding">
-        <div id="sr_dropdown_add_title" class="ext-title variable-m-title title">Add Subreddit</div>
-        <div id="sr_dropdown_edit_title" class="ext-title variable-m-title title">Edit Subreddit</div>
+        <div id="sr_dropdown_add_title" class="ext-title variable-m-label title">Add Subreddit</div>
+        <div id="sr_dropdown_edit_title" class="ext-title variable-m-label title">Edit Subreddit</div>
         Subreddit: <input id="subreddit_name" type="text" size="14"/> <br /><br />
-        Posts: <input id="subreddit_num_posts" type="number" min = "1" max="100"/>
-        <span class="ext-title">NSFW? <input id="nswf_check" type="checkbox" /></span>
+        Posts: <input id="subreddit_num_posts" type="number" value = "25" min = "1" max="100"/>
+        <span class="ext-title">NSFW? <input id="nsfw_check" type="checkbox" /></span>
       </div>
       <hr />
-      <a id="subreddit_remove" class="change-icon-button">Remove</a>
+      <a id="subreddit_cancel" class="variable-m-label change-icon-button ">Cancel</a>
+      <a id="subreddit_remove" class="variable-m-label change-icon-button ">Remove</a>
       <a id="subreddit_submit" class="submit-button">Submit</a>
     </div>
   </div>

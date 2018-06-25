@@ -1,3 +1,4 @@
+/*csslint important: false*/
 html, body{
   height : 100%;
 }
@@ -91,14 +92,14 @@ html, body{
   overflow: scroll;
   width: 160px;
 }
-.variable-m-title {
-  display: none;
-}
 .dropdown-content a, div{
     color: black;
     display: block;
     padding: 5px 8px;
     text-decoration: none;
+}
+.dropdown-content .variable-m-label{
+  display: none;
 }
 .dropdown a:hover {
   background-color: #ddd;
@@ -150,7 +151,7 @@ html, body{
   text-align: center;
 }
 .show {
-  display:block;
+  display:block !important;
 }
 .invalid {
   outline: 2px solid rgb(255, 0, 0);

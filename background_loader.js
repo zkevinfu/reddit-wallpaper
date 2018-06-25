@@ -206,6 +206,8 @@ function loadBackground() {
 document.getElementById("add_subreddit").addEventListener("click", function(){
   document.getElementById('sr_dropdown_add_title').classList.add("show");
   document.getElementById("subreddit_dropdown").classList.add("show");
+  document.getElementById("subreddit_cancel").classList.add("show");
+
 });
 
 document.getElementById("subreddit_submit").addEventListener("click", function(){
@@ -218,8 +220,8 @@ document.getElementById("subreddit_submit").addEventListener("click", function()
   } else {
     document.getElementById('subreddit_name').classList.remove("invalid");
   }
-  var count = 100;
-  var nsfw = false;
+  var count = document.getElementById('subreddit_num_posts').value;
+  var nsfw = document.getElementById('nsfw_check').checked;
   var upvotes = 0;
   settings_dict.subreddits[subreddit] = {
     count: count,
