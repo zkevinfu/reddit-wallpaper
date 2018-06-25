@@ -502,3 +502,7 @@ document.getElementById('remove_quicklink').addEventListener("click", function()
     onClickFunctionDict[thing.id] = onClickFunction;
   });
 });
+
+document.getElementById('refresh_icon').addEventListener("click", function() {
+  loadBackground();
+});

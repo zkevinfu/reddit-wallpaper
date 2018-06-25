@@ -170,6 +170,11 @@ function appendSubreddit(subreddit){
     if (subredditRemoveFunction != undefined) {
       document.getElementById("subreddit_remove").removeEventListener("click", subredditRemoveFunction);
     }
+    document.getElementById('subreddit_name').value = node.id;
+    document.getElementById('subreddit_upvote_threshold').value = node.upvotes;
+    document.getElementById('nsfw_check').checked = node.nsfw;
+    document.getElementById('subreddit_num_posts').value = node.count;
+
     document.getElementById('sr_dropdown_edit_title').classList.add("show");
     document.getElementById('subreddit_remove').classList.add("show");
     document.getElementById("subreddit_dropdown").classList.add("show");
