@@ -9,15 +9,17 @@
     <img id="menu_icon" class="m-icon" src="icons/menu_icon.png"/>
     <span id="menu_arrow" class="dropdown-box dropdown-arrow m-arrow"></span>
     <div id="menu_dropdown" class="dropdown-box dropdown-content m-dropdown">
+      <div id="add_quicklink_title" class="no-padding variable-m-label">
+        <div class="title">Add Quicklinks</div>
+      </div>
       <div id="remove_quicklink_title" class="no-padding variable-m-label">
         <div class="title">Remove Quicklinks</div>
-        <hr />
       </div>
       <div id="edit_quicklink_title" class="no-padding variable-m-label">
         <div class="title">Edit Quicklinks</div>
-        <hr />
       </div>
-      <div id="menu_dropdown_links" class="m-links">
+      <hr />
+      <div id="menu_dropdown_links" class="m-links no-padding">
         <a id="http://gmail.com" class="m-text" data-favicon_ver="favico_fav" data-value = "Gmail" href="http://gmail.com">
           <img class="m-favicon" src="https://mail.google.com/favicon.ico"/>Gmail</a>
         <a id="http://drive.google.com" class="m-text" data-favicon_ver="favico_fav" data-value = "Drive" href="http://drive.google.com">
@@ -34,11 +36,11 @@
       </div>
     </div>
     <div id="quicklink_dropdown" class="dropdown-box dropdown-content ql-dropdown">
-      <div class="quicklink-input no-padding">
-        <div id="ql_dropdown_add_title" class="ext-title variable-m-label title">Add Quicklink</div>
-        <div id="ql_dropdown_edit_title" class="ext-title variable-m-label title">Edit Quicklink</div>
-        Name:<input id="quicklink_name" type="text" size="17"/> <br /><br />
-        URL: <input id="quicklink_url" type="text" size="17"/>
+      <div id="ql_dropdown_add_title" class="ext-title variable-m-label title no-padding">Add Quicklink</div>
+      <div id="ql_dropdown_edit_title" class="ext-title variable-m-label title no-padding">Edit Quicklink</div><hr />
+      <div class="quicklink-input no-padding vert-margin">
+        <span>Name: <input id="quicklink_name" type="text" size="17"/></span> <br />
+        <span>URL: <input id="quicklink_url" type="text" size="17"/></span>
       </div>
       <hr />
       <a id="quicklink_change_icon_button" class="change-icon-button">Change Icon</a>
@@ -65,8 +67,8 @@
     <img id="info_icon" class="m-icon" src="icons/info_icon.png" />
     <span id="info_arrow" class="dropdown-box dropdown-arrow i-arrow"></span>
     <div id="info_dropdown" class="dropdown-box dropdown-content i-dropdown">
-      <a id="info_title" class="title">Title</a>
-      <a id="info_author" class="i-footer">Author</a>
+      <a id="info_title" class="title m-links">Title</a><hr />
+      <a id="info_author" class="i-footer m-links">Author</a>
       <a id="info_subreddit" class = "i-footer">Subreddit</a>
       <hr />
       <a id="info_permalink">Go to Post</a>
@@ -74,22 +76,23 @@
     <img id="setting_icon" class="m-icon" src="icons/cog.png" />
     <span id="setting_arrow" class="dropdown-box dropdown-arrow s-arrow"></span>
     <div id="setting_dropdown" class="dropdown-box dropdown-content s-dropdown">
-      <div id="setting_subreddit_list" class="m-list">
-
-      </div>
+      <div id="subreddit_list_title" class="ext-title title title-position no-padding">Subreddit List</div><hr />
+      <div id="setting_subreddit_list" class="m-links no-padding"></div><hr />
       <a id="add_subreddit">Add Subreddit</a>
     </div>
     <div id="subreddit_dropdown" class="dropdown-box dropdown-content sr-dropdown">
-      <div class="no-padding">
-        <div id="sr_dropdown_add_title" class="ext-title variable-m-label title">Add Subreddit</div>
-        <div id="sr_dropdown_edit_title" class="ext-title variable-m-label title">Edit Subreddit</div>
-        Subreddit: <input id="subreddit_name" type="text" size="14"/> <br /><br />
-        Posts: <input id="subreddit_num_posts" type="number" value = "25" min = "1" max="100"/>
-        <span class="ext-title">NSFW? <input id="nsfw_check" type="checkbox" /></span>
-      </div>
-      <hr />
-      <a id="subreddit_cancel" class="variable-m-label change-icon-button ">Cancel</a>
-      <a id="subreddit_remove" class="variable-m-label change-icon-button ">Remove</a>
+      <div id="sr_dropdown_add_title" class="ext-title variable-m-label title no-padding vert-margin">Add Subreddit</div>
+      <div id="sr_dropdown_edit_title" class="ext-title variable-m-label title no-padding vert-margin">Edit Subreddit</div>
+      <a id="subreddit_remove" class="variable-m-label submit-button i-footer">Remove</a><hr />
+      <div class="no-padding vert-margin">
+        Subreddit: <input id="subreddit_name" type="text" size="14"/> <br />
+        <div id="subreddit_advanced_options" class="variable-m-label no-padding">
+          Upvote Threshold: <input id="subreddit_upvote_threshold" type="number" value = "0" min = "1" max="1000"/><br />
+          NSFW? <input id="nsfw_check" type="checkbox" />
+          <span class="ext-title settings-checkbox">Posts: <input id="subreddit_num_posts" type="number" value = "25" min = "1" max="1000"/></span>
+        </div>
+      </div><hr />
+      <a id="subreddit_advanced" class="variable-m-label change-icon-button ">Advanced</a>
       <a id="subreddit_submit" class="submit-button">Submit</a>
     </div>
   </div>

@@ -195,8 +195,6 @@ function dropdownAppendLink(link_name, link, link_favicon, favicon_ver='favico_f
   var textnode = document.createTextNode(link_name);
   imgnode.setAttribute("class", "m-favicon");
   imgnode.setAttribute("src", link_favicon);
-  node.setAttribute('id', link);
-  node.setAttribute('class', 'm-text');
   node.setAttribute('data-value', link_name);
   node.setAttribute('data-favicon_ver', favicon_ver);
   node.setAttribute('href', link);
@@ -355,6 +353,7 @@ document.getElementById('quicklink_manage').addEventListener("click", function()
 document.getElementById('add_quicklink').addEventListener("click", function() {
   resetStatus();
   setFavi();
+  document.getElementById('add_quicklink_title').classList.add("show");
   document.getElementById('ql_dropdown_add_title').classList.add("show");
   document.getElementById('add_quicklink').classList.add("selected");
   document.getElementById("quicklink_dropdown").classList.add("show");

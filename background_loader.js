@@ -159,6 +159,8 @@ function savePostInfoList(post_info_list) {
 function appendSubreddit(subreddit){
   var node = document.createElement("a");
   var textnode = document.createTextNode(subreddit);
+  node.setAttribute('id', "list_"+subreddit);
+  node.setAttribute('class', 'i-footer');
   node.appendChild(textnode);
   document.getElementById("setting_subreddit_list").appendChild(node);
 }
@@ -203,14 +205,14 @@ function loadBackground() {
   });
 }
 
-document.getElementById("add_subreddit").addEventListener("click", function(){
+document.getElementById("add_subreddit").addEventListener("click", function() {
   document.getElementById('sr_dropdown_add_title').classList.add("show");
   document.getElementById("subreddit_dropdown").classList.add("show");
-  document.getElementById("subreddit_cancel").classList.add("show");
+  document.getElementById("subreddit_advanced").classList.add("show");
 
 });
 
-document.getElementById("subreddit_submit").addEventListener("click", function(){
+document.getElementById("subreddit_submit").addEventListener("click", function() {
   //var is_add = (subredditToEdit === '' || subredditToEdit === undefined || subredditToEdit === null);
   var subreddit = document.getElementById('subreddit_name').value;
   if (subreddit == '') {
@@ -222,13 +224,18 @@ document.getElementById("subreddit_submit").addEventListener("click", function()
   }
   var count = document.getElementById('subreddit_num_posts').value;
   var nsfw = document.getElementById('nsfw_check').checked;
-  var upvotes = 0;
+  var upvotes = document.getElementById('subreddit_upvote_threshold').value;
   settings_dict.subreddits[subreddit] = {
     count: count,
     nsfw: nsfw,
     upvotes: upvotes
   };
+  appendSubreddit(subreddit);
   chrome.storage.sync.set({settings:settings_dict});
+});
+
+document.getElementById("subreddit_advanced").addEventListener("click", function() {
+  document.getElementById("subreddit_advanced_options").classList.toggle("show");
 });
 /**
  * Entry point to loading a background

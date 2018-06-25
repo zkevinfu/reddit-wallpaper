@@ -1,6 +1,15 @@
-/*csslint important: false*/
+/*csslint false important: false*/
 html, body{
   height : 100%;
+}
+hr {
+  margin: 0 0;
+}
+br {
+  content: "";
+  display: block;
+  font-size: 24%;
+  margin: 5px;
 }
 .bg {
     background-position: center;
@@ -44,8 +53,6 @@ html, body{
 }
 .m-links {
   max-height: 200px;
-  overflow: auto;
-  padding: 0 0;
 }
 .m-text {
   white-space: nowrap;
@@ -93,10 +100,10 @@ html, body{
   width: 160px;
 }
 .dropdown-content a, div{
-    color: black;
-    display: block;
-    padding: 5px 8px;
-    text-decoration: none;
+  color: black;
+  display: block;
+  padding: 5px 8px;
+  text-decoration: none;
 }
 .dropdown-content .variable-m-label{
   display: none;
@@ -151,7 +158,7 @@ html, body{
   text-align: center;
 }
 .show {
-  display:block !important;
+  display:inline-block !important;
 }
 .invalid {
   outline: 2px solid rgb(255, 0, 0);
@@ -163,11 +170,21 @@ html, body{
 }
 .submit-button {
   float:right;
-  margin-right: 10px;
+  margin-right: 5px;
 }
 .change-icon-button {
   float: left;
   margin-left: 2px;
+}
+.vert-margin {
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+.settings-checkbox {
+  margin-left: 4px;
+}
+.title-position {
+  margin: 5px 8px;
 }
 .fav-border {
   outline: 1px solid #f1f1f1;
