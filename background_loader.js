@@ -222,9 +222,23 @@ document.getElementById("subreddit_submit").addEventListener("click", function()
   } else {
     document.getElementById('subreddit_name').classList.remove("invalid");
   }
+  subreddit = subreddit.toLowerCase();
   var count = document.getElementById('subreddit_num_posts').value;
+  if (!count.isNumeric()){
+    count = 25;
+  } else if (count <= 0 ){
+    count = 1;
+  } else if (count > 100){
+    count = 100;
+  }
   var nsfw = document.getElementById('nsfw_check').checked;
+  if (nsfw != true || nsfw!= false){
+    nsfw = false;
+  }
   var upvotes = document.getElementById('subreddit_upvote_threshold').value;
+  if (!upvotes.isNumeric()) {
+    upvotes = 0;
+  }
   settings_dict.subreddits[subreddit] = {
     count: count,
     nsfw: nsfw,
