@@ -19,6 +19,7 @@ dropdownAppendLink	tab.js	/^function dropdownAppendLink(link_name, link, link_fa
 dropdownModifyLink	tab.js	/^function dropdownModifyLink(link_name, link, link_favicon, favicon_ver='favico_fav') {$/;"	f
 fillFavi	tab.js	/^function fillFavi(url) {$/;"	f
 fillFaviImg	tab.js	/^function fillFaviImg(id, src) {$/;"	f
+firstTimeRun	background_loader.js	/^function firstTimeRun(){$/;"	f
 getUrl	background_loader.js	/^function getUrl(limit = "100") {$/;"	f
 hideDropdowns	tab.js	/^function hideDropdowns() {$/;"	f
 httpGetAsync	background_loader.js	/^function httpGetAsync(theUrl, callback, func_mod=null) {$/;"	f
