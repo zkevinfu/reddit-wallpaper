@@ -200,6 +200,55 @@ function populateSettingSubreddits(subreddits){
   });
 }
 
+function firstTimeRun(){
+  document.body.style.backgroundImage = "url(apple.jpeg)";
+  var temp_quicklink_list = [
+    {
+		  "domain": "gmail.com",
+		  "favicon": "https://mail.google.com/favicon.ico",
+		  "favicon_ver": "favico_fav",
+		  "name": "Gmail",
+		  "url": "http://gmail.com"
+	  },
+    {
+		  "domain": "drive.google.com",
+		  "favicon": "https://drive.google.com/favicon.ico",
+		  "favicon_ver": "favico_fav",
+		  "name": "Drive",
+		  "url": "http://drive.google.com"
+	  },
+    {
+      "domain": "reddit.com",
+		  "favicon": "https://icons.duckduckgo.com/ip2/reddit.com.ico",
+		  "favicon_ver": "duck_fav",
+		  "name": "Reddit",
+		  "url": "http://reddit.com"
+    }
+  ];
+  var temp_subreddit_list = {
+    "subreddits": {
+  		"imaginarylandscapes": {
+  			"count": 25,
+  			"nsfw": false,
+  			"upvotes": 0
+  		}
+    }
+  };
+  document.getElementById('info_title').textContent = "This is an apple";
+  document.getElementById('info_title').href = "https://google.com?q=do+you+not+know+what+an+apple+is";
+  document.getElementById('info_author').textContent = "I found it off google...";
+  document.getElementById('info_author').href = "https://google.com?q=you+just+had+to+click+this+didn%27t+you";
+  document.getElementById('info_subreddit').textContent = "This isn't the original image, which is why its so low quality";
+  document.getElementById('info_subreddit').href = "https://google.com?q=easter+egg";
+  document.getElementById('info_permalink').href = "https://www.pexels.com/search/apple/";
+  populateSettingSubreddits(temp_subreddit_list.subreddits);
+  temp_quicklink_list.forEach(function(item, index) {
+    dropdownAppendLink(item.name, item.url, item.favicon, item.favicon_ver);
+  });
+  chrome.storage.sync.set({settings:temp_subreddit_list});
+  chrome.storage.sync.set({quicklinks:temp_quicklink_list});
+  alert("Hey, thanks for testing this extension out for me. I've gone ahead and added a few default quicklinks for you. I've also added r/imaginarylandscapes as a subreddit to rotate from. I personally really like it, but hey you do you. If you want some suggestions, r/wallpapers is also a really nice subreddit to pull from. I won't leave any instructions on how the menus work, I tried to make the menus as intuitive as possible so if anything is confusing let me know and I'll try my best to make it better. Obviously, this won't be the landing page in the future, but if you have any suggestions on what I should put on said landing page, feel free to let me know. For the time being, enjoy this surprisingly low resolution apple as a background. \n\n- Kevin Fu");
+}
 /**
  * Accessor method for loading the background with an image. If there is no array
  * of images currently stored in chrome local storage, make a GET request.
@@ -209,7 +258,8 @@ function populateSettingSubreddits(subreddits){
 function loadBackground() {
   chrome.storage.sync.get(['settings'], function(result){
     if (!isSet(result.settings)) {
-      // TODO: Initialize Settings
+      firstTimeRun();
+      return;
     }
     r_subreddit = Object.keys(result.settings.subreddits)[
       Math.floor(Math.random() * Object.keys(result.settings.subreddits).length)
@@ -236,7 +286,7 @@ document.getElementById("add_subreddit").addEventListener("click", function() {
   document.getElementById('subreddit_num_posts').value = 25;
   document.getElementById('nsfw_check').checked = false;
   document.getElementById('subreddit_upvote_threshold').value = 0;
-  
+
   document.getElementById('sr_dropdown_add_title').classList.add("show");
   document.getElementById("subreddit_dropdown").classList.add("show");
   document.getElementById("subreddit_advanced").classList.add("show");
@@ -244,7 +294,7 @@ document.getElementById("add_subreddit").addEventListener("click", function() {
 });
 
 document.getElementById("subreddit_submit").addEventListener("click", function() {
-  var is_add = (subredditToEdit === '' || subredditToEdit === undefined || subredditToEdit === null);
+  var is_add = isSet(subredditToEdit);
   var subreddit = document.getElementById('subreddit_name').value;
   if (subreddit == '') {
     document.getElementById('subreddit_name').classList.add("invalid");

@@ -206,6 +206,8 @@ function dropdownAppendLink(link_name, link, link_favicon, favicon_ver='favico_f
   var textnode = document.createTextNode(link_name);
   imgnode.setAttribute("class", "m-favicon");
   imgnode.setAttribute("src", link_favicon);
+  node.setAttribute('class', 'm-text');
+  node.setAttribute('id', link);
   node.setAttribute('data-value', link_name);
   node.setAttribute('data-favicon_ver', favicon_ver);
   node.setAttribute('href', link);

@@ -60,6 +60,7 @@ setPermalink	popup.js	/^function setPermalink(){$/;"	f
 settings	tab.js	/^var settings = [];$/;"	v
 subredditRemoveFunction	background_loader.js	/^var subredditRemoveFunction;$/;"	v
 subredditToEdit	background_loader.js	/^var subredditToEdit = '';$/;"	v
+temp_subreddit_list.subreddits	background_loader.js	/^  var temp_subreddit_list = {$/;"	p
 url	archive/redditapitest.py	/^url = "https:\/\/www.reddit.com\/r\/imaginarylandscapes.json"$/;"	v
 url	jsonparse.py	/^url = "https:\/\/www.reddit.com\/r\/ListOfSubreddits\/wiki\/nsfw.json"$/;"	v
 url_with_favi_issues.gmailcom	tab.js	/^var url_with_favi_issues = {$/;"	p
