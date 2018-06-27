@@ -20,7 +20,7 @@ var init = true;
 
 var keep_nsfw = false;
 
-var redditToEdit = '';
+var subredditToEdit = '';
 /**
  * Returns the URL to make a GET request from, based off of stored settings.
  *
@@ -167,13 +167,14 @@ function appendSubreddit(subreddit){
   document.getElementById("subreddit_list").appendChild(node);
   node.addEventListener("click", function() {
     resetStatus();
+    subredditToEdit = node.id;
     if (subredditRemoveFunction != undefined) {
       document.getElementById("subreddit_remove").removeEventListener("click", subredditRemoveFunction);
     }
     document.getElementById('subreddit_name').value = node.id;
-    document.getElementById('subreddit_upvote_threshold').value = node.upvotes;
-    document.getElementById('nsfw_check').checked = node.nsfw;
-    document.getElementById('subreddit_num_posts').value = node.count;
+    document.getElementById('subreddit_upvote_threshold').value = settings_dict.subreddits[node.id].upvotes;
+    document.getElementById('nsfw_check').checked = settings_dict.subreddits[node.id].nsfw;
+    document.getElementById('subreddit_num_posts').value = settings_dict.subreddits[node.id].count;
 
     document.getElementById('sr_dropdown_edit_title').classList.add("show");
     document.getElementById('subreddit_remove').classList.add("show");
@@ -183,6 +184,7 @@ function appendSubreddit(subreddit){
       chrome.storage.local.get(['subreddit_post_dict'], function(result) {
         delete result.subreddit_post_dict[node.id];
         chrome.storage.local.set({subreddit_post_dict: result.subreddit_post_dict});
+        subredditToEdit = '';
       });
       delete settings_dict.subreddits[node.id];
       chrome.storage.sync.set({settings:settings_dict});
@@ -230,6 +232,11 @@ function loadBackground() {
 
 document.getElementById("add_subreddit").addEventListener("click", function() {
   resetStatus();
+  document.getElementById('subreddit_name').value = '';
+  document.getElementById('subreddit_num_posts').value = 25;
+  document.getElementById('nsfw_check').checked = false;
+  document.getElementById('subreddit_upvote_threshold').value = 0;
+  
   document.getElementById('sr_dropdown_add_title').classList.add("show");
   document.getElementById("subreddit_dropdown").classList.add("show");
   document.getElementById("subreddit_advanced").classList.add("show");
@@ -237,7 +244,7 @@ document.getElementById("add_subreddit").addEventListener("click", function() {
 });
 
 document.getElementById("subreddit_submit").addEventListener("click", function() {
-  //var is_add = (subredditToEdit === '' || subredditToEdit === undefined || subredditToEdit === null);
+  var is_add = (subredditToEdit === '' || subredditToEdit === undefined || subredditToEdit === null);
   var subreddit = document.getElementById('subreddit_name').value;
   if (subreddit == '') {
     document.getElementById('subreddit_name').classList.add("invalid");
@@ -248,7 +255,7 @@ document.getElementById("subreddit_submit").addEventListener("click", function()
   }
   subreddit = subreddit.toLowerCase();
   var count = document.getElementById('subreddit_num_posts').value;
-  if (!Number.isInteger(count)){
+  if (!Number.isInteger(Number(count))){
     count = 25;
   } else if (count <= 0 ){
     count = 1;
@@ -256,12 +263,21 @@ document.getElementById("subreddit_submit").addEventListener("click", function()
     count = 100;
   }
   var nsfw = document.getElementById('nsfw_check').checked;
-  if (nsfw != true || nsfw!= false){
+  if (nsfw == true || nsfw == 'true') {
+    nsfw = true;
+  } else {
     nsfw = false;
   }
   var upvotes = document.getElementById('subreddit_upvote_threshold').value;
-  if (!Number.isInteger(upvotes)) {
+  if (!Number.isInteger(Number(upvotes))) {
     upvotes = 0;
+  }
+  if(!is_add){
+    delete settings_dict.subreddits[subredditToEdit];
+      document.getElementById("subreddit_list").removeChild(
+        document.getElementById(subredditToEdit)
+    );
+    subredditToEdit = '';
   }
   settings_dict.subreddits[subreddit] = {
     count: count,
@@ -270,6 +286,7 @@ document.getElementById("subreddit_submit").addEventListener("click", function()
   };
   appendSubreddit(subreddit);
   chrome.storage.sync.set({settings:settings_dict});
+  document.getElementById('setting_icon').click();
 });
 
 document.getElementById("subreddit_advanced").addEventListener("click", function() {

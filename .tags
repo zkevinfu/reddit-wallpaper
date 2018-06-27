@@ -43,7 +43,6 @@ r	archive/redditapitest.py	/^r = requests.get(url, headers = {'User-agent': 'img
 r	jsonparse.py	/^r = requests.get(url, headers = {'User-agent': 'reddit_nsfw_list_poller'})$/;"	v
 r_subreddit	background_loader.js	/^var r_subreddit = "imaginarylandscapes";$/;"	v
 re	jsonparse.py	/^import re$/;"	i
-redditToEdit	background_loader.js	/^var redditToEdit = '';$/;"	v
 reg	jsonparse.py	/^reg = re.compile('\/r\/[a-zA-Z0-9]+ ')$/;"	v
 removeClass	tab.js	/^function removeClass(class_name, to_remove = 'show') {$/;"	f
 removeHTTP	tab.js	/^function removeHTTP(url) {$/;"	f
@@ -59,6 +58,7 @@ setFavi	tab.js	/^function setFavi(current="favico_fav") {$/;"	f
 setPermalink	popup.js	/^function setPermalink(){$/;"	f
 settings	tab.js	/^var settings = [];$/;"	v
 subredditRemoveFunction	background_loader.js	/^var subredditRemoveFunction;$/;"	v
+subredditToEdit	background_loader.js	/^var subredditToEdit = '';$/;"	v
 url	archive/redditapitest.py	/^url = "https:\/\/www.reddit.com\/r\/imaginarylandscapes.json"$/;"	v
 url	jsonparse.py	/^url = "https:\/\/www.reddit.com\/r\/ListOfSubreddits\/wiki\/nsfw.json"$/;"	v
 url_with_favi_issues.gmailcom	tab.js	/^var url_with_favi_issues = {$/;"	p
